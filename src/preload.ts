@@ -5,9 +5,15 @@ import { contextBridge, ipcRenderer, shell } from "electron";
 console.log('from preload.js file.');
 
 let obj = {
+    readConfigFile: () => ipcRenderer.invoke("get-ssh-config-file", "config - copy"),
+    generateSshKeys: (git_username: string) => ipcRenderer.invoke("generate-ssh-key", git_username),
+    remove_sshkey: (git_username: string) => ipcRenderer.invoke("remove-ssh-key", git_username),
+    readPublibKey: (git_username: string) => ipcRenderer.invoke("read-pub-ssh-key", git_username),
     quitApp: () => ipcRenderer.invoke("quitApp"),
     toggleMax: () => ipcRenderer.invoke("toggle-max"),
     toggleMin: () => ipcRenderer.invoke("toggle-min"),
+    checkGitUserExist: (git_username: string) => ipcRenderer.invoke("check-git-user-exist", git_username),
+    openLinkInBrowser: (url: string) => ipcRenderer.invoke('openLinkInBrowser', url),
 }
 
 contextBridge.exposeInMainWorld("electron", obj);

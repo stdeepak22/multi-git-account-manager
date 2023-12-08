@@ -97,6 +97,33 @@ body {
   width: calc(100vw - 360px);
 }
 
+.p-steps .p-steps-item:nth-child(1):before {
+  width: 50%;
+  left:50%;
+}
+.p-steps .p-steps-item:last-child:before {
+  width: 50%;
+}
+
 .p-menu .p-menuitem.p-menuitem-highlight .p-menuitem-link {
   background: var(--surface-200);  
+}
+
+.p-scrollpanel-bar {
+  opacity: 0.2; 
+}
+
+.p-scrollpanel:hover .p-scrollpanel-bar{
+  opacity: 1;
+}
+
+
+.p-panel.no-header .p-panel-content{
+  border-top:1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.p-disabled{
+  cursor: not-allowed;
+  pointer-events: unset;
 }
