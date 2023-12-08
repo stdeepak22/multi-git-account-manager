@@ -5,14 +5,17 @@ const { actions: globalStuffActions, reducer: globalStuffReducer } = createSlice
     name: 'globalStuff_slice',
     initialState: {
         selectedScreen: JSON.parse(localStorage.getItem('lastScreen')) || ScreensMapping.dashboard,
-        selectedScreenExtra: {},
+        selectedScreenExtra: JSON.parse(localStorage.getItem('lastScreenParam')) || {},
     },
     reducers: {
         setScreen: (state, action) => {
             let { screen, extra } = action.payload;
-            if (!extra || Object.keys(extra).length === 0) {
-                localStorage.setItem('lastScreen', JSON.stringify(screen));
+            if (extra) {
+                localStorage.setItem('lastScreenParam', JSON.stringify(extra));
+            } else {
+                localStorage.removeItem('lastScreenParam');
             }
+            localStorage.setItem('lastScreen', JSON.stringify(screen));
             state.selectedScreen = screen;
             state.selectedScreenExtra = extra;
         }

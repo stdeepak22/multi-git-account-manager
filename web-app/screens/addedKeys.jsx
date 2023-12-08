@@ -17,8 +17,10 @@ export const AddedKeysList = () => {
     }, []);
 
     const detailsButton = (user) => {
-        return <Button icon='pi pi-chevron-right' size='small'
-            onClick={() => dispatch(globalStuffActions.setScreen({ screen: ScreensMapping.userDetails, extra: { user: user } }))}
+        let { gitUserName } = user;
+        return <Button icon='pi pi-chevron-right' outlined rounded size='small'
+            title='Detail page'
+            onClick={() => dispatch(globalStuffActions.setScreen({ screen: ScreensMapping.userDetails, extra: { gitUserName } }))}
         />
     }
 
@@ -30,15 +32,16 @@ export const AddedKeysList = () => {
 
     const githubLink = useCallback(user => {
         let { gitUserName } = user;
-        return <a target='_parent' href='#' onClick={() => openExternalLink(`https://github.com/${gitUserName}`)}>GitHub.com/{gitUserName}</a>
+        return <a title='open profile in browser' target='_parent' href='#' onClick={() => openExternalLink(`https://github.com/${gitUserName}`)}>Github.com/{gitUserName}</a>
     }, [])
+
     return <>
         <SidePanelPage screenTitle="Following Keys are added">
             <DataTable value={userList} tableStyle={{ minWidth: '50rem' }}>
                 <Column header="Git Name" field="gitUserName" ></Column>
-                <Column header="GitHub Profile" body={githubLink} ></Column>
+                <Column header="Github Profile" body={githubLink} ></Column>
                 <Column header="Added At" body={getReadbleDate}></Column>
-                <Column header="..." body={detailsButton}></Column>
+                <Column header='' body={detailsButton}></Column>
             </DataTable>
 
         </SidePanelPage>

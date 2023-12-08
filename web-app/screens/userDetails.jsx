@@ -7,11 +7,11 @@ import { useDispatch } from 'react-redux';
 import { ScreensMapping } from './screenConfig';
 import { showToast } from '../src/non-component-sharing';
 
-export const UserDetails = ({ user }) => {
+export const UserDetails = ({ gitUserName }) => {
     const [pubKey, setPubKey] = useState('');
     const dispatch = useDispatch();
     const deleteAcc = () => {
-        electron.remove_sshkey(user.gitUserName).then(() => {
+        electron.remove_sshkey(gitUserName).then(() => {
             dispatch(globalStuffActions.setScreen({
                 screen: ScreensMapping.addedKeys,
                 extra: {}
@@ -30,7 +30,7 @@ export const UserDetails = ({ user }) => {
     };
 
     useEffect(() => {
-        electron.readPublibKey(user.gitUserName).then(key => {
+        electron.readPublibKey(gitUserName).then(key => {
             setPubKey(key);
         })
     }, []);
@@ -47,7 +47,7 @@ export const UserDetails = ({ user }) => {
             header="Panel Heading"
             icons={<Button icon='pi pi-trash' severity="danger" label='Delete' title='Delete' onClick={askConfirmation} />}>
 
-            <h3>Git Name: {user.gitUserName}</h3>
+            <h3>Git Name: {gitUserName}</h3>
             <Panel header="Public key"
                 icons={<Button icon='pi pi-copy' severity="success" title='Copy Key' onClick={copyToClip} />}
                 style={{ overflowWrap: 'break-word' }}
