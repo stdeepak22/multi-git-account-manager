@@ -59,23 +59,20 @@ export const Section_GenKey = () => {
         style={{ opacity: 0 }}
     >
         <div className='w-9'>
-            <Panel
-                icons={<i className='pi pi-exclamation-circle' />}
-                header="How it works?"
-            >
+            <Panel header="How it works?" >
                 <div>Here, we will use actual github name, example <em>https://github.com/<b>xxxxxx</b></em>. First, We will validate if that
                     user really exist on github. If Yes, we'll create SSH keys pair for you and will configure those keys to be used for the same git account.<br /><br />
                     These keys are <b>not associated with your github yet</b>. Its just public-private key pair that we have generated locally and considered these
                     keys should be used for given Git account.<br /><br />
                     In next step we will use created public key, and will add to your github account to allow git access over SSH. <br /><br />
-                    <em>Remember: Your private key is still in system, and doesn't need to be give to anyone.</em>
+                    <i className="text-primary"><span className="font-semibold">Remember:</span> Your private key is still in your local system, and doesn't need to be give to anyone.</i>
                 </div>
             </Panel>
             <Panel className='my-4' header="Generate key for your Git account">
                 <div className="flex flex-column gap-2">
                     <label htmlFor="username">Github User Name</label>
                     <span className="p-input-icon-left">
-                        <i className="pi pi-user text-primary" />
+                        <i className="pi pi-github text-primary" />
                         <InputPrependText color="var(--primary-color)">https://github.com/</InputPrependText>
                         <InputText id="username" value={gitData.name} disabled={gitData.keyAdded} onChange={setGitName} className='w-full' style={{ paddingLeft: 178 }} />
                     </span>

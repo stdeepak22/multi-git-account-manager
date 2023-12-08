@@ -16,6 +16,7 @@ const getImageBase64 = async (imageUrl: string) => {
 }
 
 ipcMain.handle('check-git-user-exist', async (_, gitUserName) => {
+    gitUserName = gitUserName.trim().toLocaleLowerCase();
     let res = await axios.get(`https://api.github.com/users/${gitUserName}`);
     let { data } = res;
     if (data.avatar_url) {

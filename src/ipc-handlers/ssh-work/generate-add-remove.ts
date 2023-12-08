@@ -4,6 +4,7 @@ import { existsSync, appendFileSync, mkdirSync, writeFileSync, rmSync, readFileS
 import { join } from "path";
 
 function generateSshKeysAndAdd(git_username: string) {
+    git_username = git_username.trim().toLocaleLowerCase();
     let constants = getConstants();
     let { userName, hostname, appWorkingDirPath } = constants;
 
@@ -18,7 +19,7 @@ function generateSshKeysAndAdd(git_username: string) {
 
         const result = execSync(cmd, { cwd: appWorkingDirPath, encoding: 'utf-8' });
         const isSucess = result.includes("The key's randomart image is");
-        isSucess && addIdentityKeysToConfig(git_username, privKeyFileName, constants);
+        isSucess && _addIdentityKeysToConfig(git_username, privKeyFileName, constants);
         return isSucess;
     }
     catch (ex) {
@@ -26,7 +27,7 @@ function generateSshKeysAndAdd(git_username: string) {
     }
 }
 
-function addIdentityKeysToConfig(git_username: string, fileName: string, constants: Constants) {
+function _addIdentityKeysToConfig(git_username: string, fileName: string, constants: Constants) {
     let { appWorkingDir, addedByName, sshConfigFilePath } = constants;
     let [start, end] = getConfigStartEndComments(git_username);
     const dt = new Date();
@@ -36,14 +37,14 @@ function addIdentityKeysToConfig(git_username: string, fileName: string, constan
     lines.push(`  HostName github.com`);
     lines.push(`  User git`);
     lines.push(`  IdentityFile ~/${appWorkingDir}/${fileName}`);
-    lines.push(`  AddedBy ${addedByName}`);
-    lines.push(`  AddedAt ${dt.toISOString()}`);
+    lines.push(`  # AddedBy ${addedByName}`);
+    lines.push(`  # AddedAt ${dt.toISOString()}`);
     lines.push(end);
     appendFileSync(sshConfigFilePath, lines.join("\n"));
 }
 
 
-function getStartEndWithEmptyLines(lines: string[], git_username: string) {
+function _getStartEndWithEmptyLines(lines: string[], git_username: string) {
     let idxStart = -1;
     let idxEnd = -1;
     let [start, end] = getConfigStartEndComments(git_username);
@@ -68,12 +69,14 @@ function getStartEndWithEmptyLines(lines: string[], git_username: string) {
     }
     return [idxStart, idxEnd];
 }
+
 function removeKeysAndConfig(git_username: string) {
+    git_username = git_username.trim().toLocaleLowerCase();
     let { sshConfigFilePath, appWorkingDirPath } = getConstants();
     if (existsSync(sshConfigFilePath)) {
         var fullText = readFileSync(sshConfigFilePath, { encoding: 'utf8' });
         let lines = fullText.split("\n");
-        let [idxStart, idxEnd] = getStartEndWithEmptyLines(lines, git_username);
+        let [idxStart, idxEnd] = _getStartEndWithEmptyLines(lines, git_username);
         if (idxStart === -1 || idxEnd === -1) {
             throw Error('No such account configured.');
         }

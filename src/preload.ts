@@ -14,6 +14,7 @@ let obj = {
     toggleMin: () => ipcRenderer.invoke("toggle-min"),
     checkGitUserExist: (git_username: string) => ipcRenderer.invoke("check-git-user-exist", git_username),
     openLinkInBrowser: (url: string) => ipcRenderer.invoke('openLinkInBrowser', url),
+    verityGitAccessOverSSH: (git_username: string) => ipcRenderer.invoke('verityGitAccessOverSSH', git_username),
 }
 
 contextBridge.exposeInMainWorld("electron", obj);

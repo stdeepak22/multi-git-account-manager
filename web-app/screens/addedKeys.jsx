@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sshKeysActions } from '../store/slices/sshKeySlice';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { ScreenTitle } from '../components/screenTitleFooter';
 import { SidePanelPage } from '../components/sidePanelPage';
 import { globalStuffActions } from '../store/slices/globalStuffSlice';
 import { ScreensMapping } from './screenConfig';
 import { Button } from 'primereact/button';
+import { openExternalLink } from '../src/non-component-sharing';
 
 export const AddedKeysList = () => {
     let { userList } = useSelector(st => st.sshKeys);
@@ -28,14 +28,9 @@ export const AddedKeysList = () => {
         return `${dt.toLocaleTimeString()}, ${dt.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}`;
     }, []);
 
-    const openLink = useCallback(gitUserName => e => {
-        e.preventDefault();
-        window.electron.openLinkInBrowser(`https://github.com/${gitUserName}`);
-    }, []);
-
     const githubLink = useCallback(user => {
         let { gitUserName } = user;
-        return <a target='_parent' href='#' onClick={openLink(gitUserName)}>GitHub.com/{gitUserName}</a>
+        return <a target='_parent' href='#' onClick={() => openExternalLink(`https://github.com/${gitUserName}`)}>GitHub.com/{gitUserName}</a>
     }, [])
     return <>
         <SidePanelPage screenTitle="Following Keys are added">

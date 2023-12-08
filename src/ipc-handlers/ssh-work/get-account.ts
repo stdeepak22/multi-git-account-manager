@@ -41,11 +41,11 @@ function getSshAccounts() {
             if (c.startsWith("IdentityFile ")) {
                 cur.IdentityFile = c.replace("IdentityFile ", "").trim();
             }
-            if (c.startsWith("AddedBy ")) {
-                cur.AddedBy = c.replace("AddedBy ", "").trim();
+            if (c.startsWith("# AddedBy ")) {
+                cur.AddedBy = c.replace("# AddedBy ", "").trim();
             }
-            if (c.startsWith("AddedAt ")) {
-                cur.AddedAt = c.replace("AddedAt ", "").trim();
+            if (c.startsWith("# AddedAt ")) {
+                cur.AddedAt = c.replace("# AddedAt ", "").trim();
             }
         });
         checkAndAdd();
@@ -57,6 +57,7 @@ function getSshAccounts() {
 }
 
 function readPublicKey(gitUserName: string) {
+    gitUserName = gitUserName.trim().toLocaleLowerCase();
     let { sshConfigFilePath, appWorkingDirPath } = getConstants();
     if (existsSync(sshConfigFilePath)) {
         const [_, pubKeyFileName] = getKeysFileName(gitUserName);

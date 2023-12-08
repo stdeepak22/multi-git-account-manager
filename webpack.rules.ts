@@ -19,7 +19,7 @@ export const rules: Required<ModuleOptions>['rules'] = [
     },
   },
   {
-    test: /\.(png|gif|jpg)$/i,
+    test: /\.(mp3|mp4|png|gif|jpg)$/i,
     use: [{
       loader: 'file-loader',
     }]

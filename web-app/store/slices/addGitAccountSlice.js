@@ -4,7 +4,8 @@ const defaultState = {
     name: '',
     isValid: undefined,
     keyAdded: false,
-    gitProfileData: undefined
+    gitProfileData: undefined,
+    confirmedPubKeyConfigured: false
 };
 
 
@@ -27,9 +28,13 @@ const { actions: addGitAccountActions, reducer: addGitAccountReducer } = createS
             let { isValid, gitProfileData } = action.payload;
             state.isValid = isValid;
             state.gitProfileData = gitProfileData;
+            state.confirmedPubKeyConfigured = false
         },
         markKeyAdded: (state) => {
             state.keyAdded = true;
+        },
+        toggleConfPubKeyConfig: (state) => {
+            state.confirmedPubKeyConfigured = !state.confirmedPubKeyConfigured;
         }
     }
 });

@@ -7,6 +7,7 @@ import { Section_SSH } from './sections/section_ssh';
 import { Section_GenKey } from './sections/section_gen_key';
 import { addGitAccountActions } from '../../store/slices/addGitAccountSlice';
 import { Section_ConfigGit } from './sections/section_configGit';
+import { Section_TestAndComplete } from './sections/section_testComplete';
 
 const items = [{ label: 'SSH' }, { label: 'Generate Key' }, { label: 'Configure Git' }, { label: 'Test and Complete' }];
 
@@ -20,12 +21,16 @@ export const AddNewAccount = () => {
 
     const allowedNext = () => {
         switch (stepData.currentStep) {
+            case 0:
+                return true;
             case 1:
                 return gitData.keyAdded;
             case 2:
-                return gitData.keyAdded;
+                return gitData.confirmedPubKeyConfigured;
+            case 3:
+                return gitData.confirmedPubKeyConfigured;
             default:
-                return true;
+                return false;
         }
     }
 
@@ -38,7 +43,7 @@ export const AddNewAccount = () => {
             case 2:
                 return <Section_ConfigGit />
             case 3:
-                return <h2>Details about process</h2>
+                return <Section_TestAndComplete />
             default:
                 return <h2>Default</h2>
         }
@@ -52,16 +57,17 @@ export const AddNewAccount = () => {
         let btnStyle = { width: 100 };
         let curStp = stepData.currentStep;
         let disablePrev = curStp === 0;
-        let disableNxt = curStp + 1 === items.length || !allowedNext();
+        const isLastStep = curStp + 1 === items.length;
+        let disableNxt = !allowedNext(); // || isLastStep;
         return <>
             <Button icon='pi pi-chevron-left'
                 disabled={disablePrev} outlined={disablePrev}
                 label='Previous'
                 onClick={updateCurrentStep(-1)} size='small' style={btnStyle} />
             <i className='w-1rem' />
-            <Button icon='pi pi-chevron-right'
+            <Button icon={`pi pi-${isLastStep ? 'check' : 'chevron-right'}`}
                 disabled={disableNxt} outlined={disableNxt}
-                iconPos='right' label='Next'
+                iconPos='right' label={isLastStep ? 'Finish' : 'Next'}
                 onClick={updateCurrentStep(1)} size='small' style={btnStyle} />
         </>
     }

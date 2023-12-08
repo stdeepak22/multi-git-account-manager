@@ -1,27 +1,71 @@
-import React from "react"
+import React, { useState } from "react"
+import HelpVideo from './../../../../assets/git-add-ssh-key.mp4';
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
+import { Panel } from "primereact/panel";
+import { useDispatch, useSelector } from "react-redux";
+import { Avatar } from "primereact/avatar";
+import { Tag } from "primereact/tag";
+import { openExternalLink } from "../../../src/non-component-sharing";
+import { addGitAccountActions } from "../../../store/slices/addGitAccountSlice";
 
+
+const DialogWithVideo = ({ onClose }) => {
+    return <Dialog header="How to set SSH key" visible={true} style={{ width: 850 }} onHide={onClose}>
+        <p className="m-0">
+            <video src={HelpVideo} autoPlay controls={true} className="w-full" />
+        </p>
+    </Dialog>
+}
 export const Section_ConfigGit = () => {
+    const dispatch = useDispatch();
+    const { name, confirmedPubKeyConfigured } = useSelector(st => st.addGitAccount);
+
+    const [showVideo, setShowVideo] = useState(false);
+    const toggleVideoDialog = () => {
+        setShowVideo(st => !st);
+    }
+
     return <div className='flex justify-content-center align-items-center flex-grow-1 fadein animation-fill-forwards animation-duration-500'
         style={{ opacity: 0 }}>
         <div className='flex-grow-1'>
-            <p>Using SSH in Git offers secure communication with encrypted data transfer, utilizing public-key cryptography for
-                authentication, enhancing overall system security. It enables password-free access via key-based authentication,
-                streamlining the Git workflow. Access control is improved as SSH keys are associated with specific users, facilitating
-                granular permissions. SSH supports multiple accounts and eliminates the need for managing HTTPS credentials, particularly
-                useful in handling various repositories. Its performance benefits, especially for large repositories, make it an efficient
-                choice. The setup of SSH keys enhances user experience by reducing the need for constant credential entry. It provides a
-                seamless and secure channel for communication between local and remote Git repositories. SSH is versatile, supporting different
-                platforms like GitHub, GitLab, and Bitbucket. The protocol ensures data integrity and confidentiality during the Git operations.
-                Overall, SSH is a reliable and widely adopted choice for secure and efficient Git interactions.</p>
-            <p>Using SSH in Git offers secure communication with encrypted data transfer, utilizing public-key cryptography for
-                authentication, enhancing overall system security. It enables password-free access via key-based authentication,
-                streamlining the Git workflow. Access control is improved as SSH keys are associated with specific users, facilitating
-                granular permissions. SSH supports multiple accounts and eliminates the need for managing HTTPS credentials, particularly
-                useful in handling various repositories. Its performance benefits, especially for large repositories, make it an efficient
-                choice. The setup of SSH keys enhances user experience by reducing the need for constant credential entry. It provides a
-                seamless and secure channel for communication between local and remote Git repositories. SSH is versatile, supporting different
-                platforms like GitHub, GitLab, and Bitbucket. The protocol ensures data integrity and confidentiality during the Git operations.
-                Overall, SSH is a reliable and widely adopted choice for secure and efficient Git interactions.</p>
-        </div>
-    </div>
+            {showVideo && <DialogWithVideo onClose={toggleVideoDialog} />}
+            <Panel
+                header="How to configure public key?"
+            >
+                <div>
+                    In previous steps we generated a key pair - private key + public key. This Public key we will give to Github, and then using SSH
+                    if your local machine try to access, it will be allowed as private key is available in your local machine corresponding to same public key you just configured in GitHub. <br /><br />
+                    <i className="text-primary"><span className="font-semibold">Remember:</span> Your private key is still in your local system, and doesn't need to be give to anyone.</i><br /><br />
+                    We can configure SSH by following steps -
+                    <ol>
+                        <li>goto your github account <code className="text-primary">"https://github.com/{name}"</code></li>
+                        <li>navigate to <code className="text-primary">"Settings"</code></li>
+                        <li>navigate to <code className="text-primary">"SSH and GPG keys"</code></li>
+                        <li>click on button <code className="text-primary">"New SSH Key" </code><Tag value="Open" icon="pi pi-external-link" className="cursor-pointer" onClick={() => openExternalLink(`https://github.com/settings/ssh/new`)} /></li>
+                        <li>paste the public key in <code className="text-primary">"Key"</code> area (you can copy key from below) </li>
+                        <li>provide a descriptive name to <code className="text-primary">"Title"</code> field, so you can remember it.</li>
+                        <li>click <code className="text-primary">"Add SSH Key"</code> to save</li>
+                        <li>thats it, its done!! <Avatar icon="pi pi-check" shape="circle" className="bg-green-400 text-white" /></li>
+                    </ol>
+
+                    Watch the steps in Video <Tag value="Video" icon="pi pi-play" className="cursor-pointer" onClick={toggleVideoDialog} /><br />
+                </div>
+            </Panel>
+            <Panel className="mt-4 no-header">
+                <div className="flex justify-content-center align-items-center">
+                    You can go to next steps if you have completed above steps.
+                    Have you done? <Button className="ml-4 w-6rem" severity="success"
+                        label="Yes"
+                        icon="pi pi-check"
+                        iconPos="right"
+                        size="sm"
+                        onClick={() => dispatch(addGitAccountActions.toggleConfPubKeyConfig())}
+                        outlined={!confirmedPubKeyConfigured}
+                    ></Button>
+                </div>
+            </Panel>
+
+        </div >
+    </div >
 }
