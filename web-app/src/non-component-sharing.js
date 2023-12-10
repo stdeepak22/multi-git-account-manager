@@ -15,12 +15,33 @@ export const { setToastCallback, showToast } = (() => {
     }
 })();
 
-export const { openExternalLink, verifySSHAccess } = (() => {
+
+export const { isoStringToReadable } = (() => {
+    let isoStringToReadable = isoString => {
+        const dt = new Date(isoString);
+        return `${dt.toLocaleTimeString()}, ${dt.toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' })}`;
+    }
+    return {
+        isoStringToReadable
+    }
+})()
+
+export const { openExternalLink, verifySSHAccess, getPublicKey } = (() => {
     const openExternalLink = url => {
         window.electron.openLinkInBrowser(url);
     }
 
-    const verifySSHAccess = gitUserName => window.electron.verityGitAccessOverSSH(gitUserName)
-    return { openExternalLink, verifySSHAccess }
+    const verifySSHAccess = async gitUserName => {
+        try {
+            let { stdout, stderr } = await window.electron.verityGitAccessOverSSH(gitUserName);
+            return (stderr + stdout).includes(`You've successfully authenticated`);
+        } catch (_) {
+            return false;
+        }
+    }
+
+    const getPublicKey = gitUserName => window.electron.readPublicKey(gitUserName);
+
+    return { openExternalLink, verifySSHAccess, getPublicKey }
 })();
 

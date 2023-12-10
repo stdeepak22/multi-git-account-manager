@@ -2,10 +2,16 @@ import React from 'react';
 import { Card } from "primereact/card"
 import { ScreenFooter, ScreenTitle } from "./screenTitleFooter"
 import { ScrollPanel } from "primereact/scrollpanel";
+import { Button } from 'primereact/button';
 
-export const SidePanelPage = ({ screenTitle, footer, footerAlign, className, style, children }) => {
-    const header = screenTitle ? <ScreenTitle>{screenTitle}</ScreenTitle> : null;
+export const SidePanelPage = ({ screenTitle, onHeaderBackClick, footer, footerAlign, className, style, children }) => {
+    let header = screenTitle ? <ScreenTitle className='flex align-items-center justify-content-start'>
+        {onHeaderBackClick && <Button icon='pi pi-chevron-left' rounded link size='small' onClick={onHeaderBackClick} title='go back' className='absolute text-white' />}
+        <label className='m-auto'>{screenTitle}</label>
+    </ScreenTitle> : null;
+
     const footerWithWrapper = footer ? <ScreenFooter $footerAlign={footerAlign}>{footer}</ScreenFooter> : null;
+
     return <Card
         header={header}
         footer={footerWithWrapper}

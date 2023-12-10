@@ -7,7 +7,7 @@ import { SidePanelPage } from '../components/sidePanelPage';
 import { globalStuffActions } from '../store/slices/globalStuffSlice';
 import { ScreensMapping } from './screenConfig';
 import { Button } from 'primereact/button';
-import { openExternalLink } from '../src/non-component-sharing';
+import { isoStringToReadable, openExternalLink } from '../src/non-component-sharing';
 
 export const AddedKeysList = () => {
     let { userList } = useSelector(st => st.sshKeys);
@@ -17,22 +17,21 @@ export const AddedKeysList = () => {
     }, []);
 
     const detailsButton = (user) => {
-        let { gitUserName } = user;
+        let { gitUserName, AddedAt: addedAt } = user;
         return <Button icon='pi pi-chevron-right' outlined rounded size='small'
             title='Detail page'
-            onClick={() => dispatch(globalStuffActions.setScreen({ screen: ScreensMapping.userDetails, extra: { gitUserName } }))}
+            onClick={() => dispatch(globalStuffActions.setScreen({ screen: ScreensMapping.accountDetails, extra: { gitUserName, addedAt } }))}
         />
     }
 
     const getReadbleDate = useCallback(user => {
         const { AddedAt } = user; // this is ISO string;
-        const dt = new Date(AddedAt);
-        return `${dt.toLocaleTimeString()}, ${dt.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}`;
+        return isoStringToReadable(AddedAt);
     }, []);
 
     const githubLink = useCallback(user => {
         let { gitUserName } = user;
-        return <a title='open profile in browser' target='_parent' href='#' onClick={() => openExternalLink(`https://github.com/${gitUserName}`)}>Github.com/{gitUserName}</a>
+        return <a title='open profile in browser' href='#' onClick={() => openExternalLink(`https://github.com/${gitUserName}`)}>Github.com/{gitUserName}</a>
     }, [])
 
     return <>

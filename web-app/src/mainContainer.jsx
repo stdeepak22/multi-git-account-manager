@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { ScreensMapping } from '../screens/screenConfig';
 import { Dashboard } from '../screens/dashboard'
-import { UserDetails } from '../screens/userDetails'
+import { AccountDetails } from '../screens/accountDetails/accountDetails'
 import { AddNewAccount } from '../screens/addNewAccount/addNewAccount'
 import { AddedKeysList } from '../screens/addedKeys';
 
@@ -13,8 +13,8 @@ function getScreen(name, data) {
             return <AddNewAccount {...allProps} />
         case ScreensMapping.addedKeys:
             return <AddedKeysList {...allProps} />
-        case ScreensMapping.userDetails:
-            return <UserDetails {...allProps} />
+        case ScreensMapping.accountDetails:
+            return <AccountDetails {...allProps} />
         default:
             return <Dashboard {...allProps} />;
     }

@@ -127,3 +127,7 @@ body {
   cursor: not-allowed;
   pointer-events: unset;
 }
+
+.word-wrap-break{
+  word-wrap: break-word;
+}

@@ -1,6 +1,6 @@
 export const ScreensMapping = {
-    dashboard: 'dashboard',
+    dashboard: 'dashboardScreen',
     addedKeys: 'addedKeysScreen',
-    userDetails: 'userKeyDetails',
-    addNewAccount: 'ssh-add',
+    accountDetails: 'accountDetailsScreen',
+    addNewAccount: 'addNewAccountScreen',
 }

@@ -1,35 +1,49 @@
-import React, { useState } from "react"
-import HelpVideo from './../../../../assets/git-add-ssh-key.mp4';
+import React, { useEffect, useState } from "react"
 import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
 import { Panel } from "primereact/panel";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "primereact/avatar";
 import { Tag } from "primereact/tag";
-import { openExternalLink } from "../../../src/non-component-sharing";
+import { getPublicKey, openExternalLink, showToast } from "../../../src/non-component-sharing";
 import { addGitAccountActions } from "../../../store/slices/addGitAccountSlice";
+import { ShowPublicKeyDialog, ShowSshConfigureVideoDialog } from "../../../components/commonDialogComp";
 
 
-const DialogWithVideo = ({ onClose }) => {
-    return <Dialog header="How to set SSH key" visible={true} style={{ width: 850 }} onHide={onClose}>
-        <p className="m-0">
-            <video src={HelpVideo} autoPlay controls={true} className="w-full" />
-        </p>
-    </Dialog>
-}
 export const Section_ConfigGit = () => {
     const dispatch = useDispatch();
     const { name, confirmedPubKeyConfigured } = useSelector(st => st.addGitAccount);
 
-    const [showVideo, setShowVideo] = useState(false);
+    const [dialogShow, setDialogShow] = useState({
+        video: false,
+        publicKey: false,
+    });
+    const [pubKey, setPubKey] = useState('');
+
     const toggleVideoDialog = () => {
-        setShowVideo(st => !st);
+        setDialogShow(st => ({ ...st, video: !st.video }));
     }
+
+    const togglePublicKeyDialog = () => {
+        setDialogShow(st => ({ ...st, publicKey: !st.publicKey }));
+    }
+
+    const copyToClip = () => {
+        navigator.clipboard.writeText(pubKey).then(() => {
+            showToast({ severity: 'info', summary: 'Copy', detail: `Public key copied to clip!`, life: 3000 })
+        });
+    }
+
+    useEffect(() => {
+        getPublicKey(name).then(key => {
+            setPubKey(key);
+        })
+    }, []);
 
     return <div className='flex justify-content-center align-items-center flex-grow-1 fadein animation-fill-forwards animation-duration-500'
         style={{ opacity: 0 }}>
         <div className='flex-grow-1'>
-            {showVideo && <DialogWithVideo onClose={toggleVideoDialog} />}
+            {dialogShow.video && <ShowSshConfigureVideoDialog onClose={toggleVideoDialog} />}
+            {dialogShow.publicKey && <ShowPublicKeyDialog pubKey={pubKey} onClose={togglePublicKeyDialog} onCopy={copyToClip} />}
             <Panel
                 header="How to configure public key?"
             >
@@ -38,12 +52,15 @@ export const Section_ConfigGit = () => {
                     if your local machine try to access, it will be allowed as private key is available in your local machine corresponding to same public key you just configured in GitHub. <br /><br />
                     <i className="text-primary"><span className="font-semibold">Remember:</span> Your private key is still in your local system, and doesn't need to be give to anyone.</i><br /><br />
                     We can configure SSH by following steps -
-                    <ol>
+                    <ol style={{ lineHeight: `30px` }}>
                         <li>goto your github account <code className="text-primary">"https://github.com/{name}"</code></li>
                         <li>navigate to <code className="text-primary">"Settings"</code></li>
                         <li>navigate to <code className="text-primary">"SSH and GPG keys"</code></li>
                         <li>click on button <code className="text-primary">"New SSH Key" </code><Tag value="Open" icon="pi pi-external-link" className="cursor-pointer" onClick={() => openExternalLink(`https://github.com/settings/ssh/new`)} /></li>
-                        <li>paste the public key in <code className="text-primary">"Key"</code> area (you can copy key from below) </li>
+                        <li>paste the public key in <code className="text-primary">"Key"</code> area
+                            <Tag value="Copy Key" icon="pi pi-copy" className="cursor-pointer mr-2" onClick={copyToClip} />
+                            <Tag value="Show Key" icon="pi pi-book" className="cursor-pointer" onClick={togglePublicKeyDialog} />
+                        </li>
                         <li>provide a descriptive name to <code className="text-primary">"Title"</code> field, so you can remember it.</li>
                         <li>click <code className="text-primary">"Add SSH Key"</code> to save</li>
                         <li>thats it, its done!! <Avatar icon="pi pi-check" shape="circle" className="bg-green-400 text-white" /></li>
