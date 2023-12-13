@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ScreensMapping } from '../screens/screenConfig';
 import { globalStuffActions } from '../store/slices/globalStuffSlice';
 import { Tree } from 'primereact/tree';
-import { Checkbox } from 'primereact/checkbox';
 import img from './../../assets/logo_128.png';
 
 export const LeftNavbar = () => {
@@ -54,8 +53,7 @@ export const LeftNavbar = () => {
             icon: 'pi pi-home',
             label: 'Home',
             className: ScreensMapping.dashboard === selectedScreen ? 'p-menuitem-highlight' : '',
-            command: (...a) => {
-                console.log(`test args`, a);
+            command: () => {
                 dispatch(globalStuffActions.setScreen({ screen: ScreensMapping.dashboard, extra: {} }));
             }
         },
@@ -74,7 +72,7 @@ export const LeftNavbar = () => {
                 {
                     label: "Added",
                     icon: 'pi pi-check',
-                    className: ScreensMapping.addedKeys === selectedScreen ? 'p-menuitem-highlight' : '',
+                    className: [ScreensMapping.addedKeys, ScreensMapping.accountDetails].includes(selectedScreen) ? 'p-menuitem-highlight' : '',
                     command: () => {
                         dispatch(globalStuffActions.setScreen({ screen: ScreensMapping.addedKeys, extra: {} }));
                     }

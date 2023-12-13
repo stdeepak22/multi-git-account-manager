@@ -16,7 +16,7 @@ const { actions: sshKeyPartialActions, reducer: sshKeyReducer } = createSlice({
     }
 });
 
-const sshKeysActions = { sshKeyPartialActions, loadSavedKeys };
+const sshKeysActions = { ...sshKeyPartialActions, loadSavedKeys };
 
 export {
     sshKeyReducer,

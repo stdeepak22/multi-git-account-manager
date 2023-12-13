@@ -3,12 +3,14 @@ import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"
 import { useDispatch } from "react-redux";
 import { globalStuffActions } from "../../store/slices/globalStuffSlice";
 import { ScreensMapping } from "../screenConfig";
+import { sshKeysActions } from "../../store/slices/sshKeySlice";
 
 
 export const DeleteConfirmationDialog = forwardRef(({ gitUserName }, ref) => {
     const dispatch = useDispatch();
     const deleteAcc = () => {
         electron.remove_sshkey(gitUserName).then(() => {
+            dispatch(sshKeysActions.loadSavedKeys())
             dispatch(globalStuffActions.setScreen({
                 screen: ScreensMapping.addedKeys,
                 extra: {}

@@ -20,7 +20,7 @@ export const AccountDetails = ({ gitUserName, addedAt }) => {
     }, [dispatch])
 
 
-    return <SidePanelPage screenTitle="User Details" onHeaderBackClick={goBackToList}>
+    return <SidePanelPage screenTitle="User Details" showBack onHeaderBackClick={goBackToList}>
         <DeleteConfirmationDialog gitUserName={gitUserName} ref={confirmRef} />
         <Panel header="SSH Key Details">
             <div className='flex gap-3 mb-4'>

@@ -8,6 +8,8 @@ import { Section_GenKey } from './sections/section_gen_key';
 import { addGitAccountActions } from '../../store/slices/addGitAccountSlice';
 import { Section_ConfigGit } from './sections/section_configGit';
 import { Section_TestAndComplete } from './sections/section_testComplete';
+import { globalStuffActions } from '../../store/slices/globalStuffSlice';
+import { ScreensMapping } from '../screenConfig';
 
 const items = [{ label: 'SSH' }, { label: 'Generate Key' }, { label: 'Configure Git' }, { label: 'Test and Complete' }];
 
@@ -28,7 +30,7 @@ export const AddNewAccount = () => {
             case 2:
                 return gitData.confirmedPubKeyConfigured;
             case 3:
-                return gitData.confirmedPubKeyConfigured;
+                return gitData.gitConnectedTested;
             default:
                 return false;
         }
@@ -52,6 +54,15 @@ export const AddNewAccount = () => {
     const updateCurrentStep = vl => () => {
         setStepData(st => ({ ...st, currentStep: st.currentStep + vl }));
     }
+
+    useEffect(() => {
+        if (stepData.currentStep >= items.length) {
+            dispatch(globalStuffActions.setScreen({
+                screen: ScreensMapping.addedKeys,
+                extra: {}
+            }))
+        }
+    }, [stepData.currentStep]);
 
     function getFooter() {
         let btnStyle = { width: 100 };

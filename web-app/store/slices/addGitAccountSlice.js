@@ -2,10 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const defaultState = {
     name: '',
-    isValid: undefined,
-    keyAdded: false,
-    gitProfileData: undefined,
-    confirmedPubKeyConfigured: false
+    isValid: undefined,     // verify using git api
+    keyAdded: false,        // user will allow to add
+    gitProfileData: undefined,  // data fetched from git api using "name"
+    confirmedPubKeyConfigured: false,   // user will confirm after adding publish key to git ssh key
+    gitConnectedTested: false   // once connection verifed to github
 };
 
 
@@ -35,6 +36,9 @@ const { actions: addGitAccountActions, reducer: addGitAccountReducer } = createS
         },
         toggleConfPubKeyConfig: (state) => {
             state.confirmedPubKeyConfigured = !state.confirmedPubKeyConfigured;
+        },
+        markGitConnectionTested: (state, action) => {
+            state.gitConnectedTested = action.payload;
         }
     }
 });

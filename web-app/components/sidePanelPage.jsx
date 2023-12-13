@@ -4,9 +4,9 @@ import { ScreenFooter, ScreenTitle } from "./screenTitleFooter"
 import { ScrollPanel } from "primereact/scrollpanel";
 import { Button } from 'primereact/button';
 
-export const SidePanelPage = ({ screenTitle, onHeaderBackClick, footer, footerAlign, className, style, children }) => {
+export const SidePanelPage = ({ screenTitle, showBack, onHeaderBackClick, footer, footerAlign, className, style, children }) => {
     let header = screenTitle ? <ScreenTitle className='flex align-items-center justify-content-start'>
-        {onHeaderBackClick && <Button icon='pi pi-chevron-left' rounded link size='small' onClick={onHeaderBackClick} title='go back' className='absolute text-white' />}
+        {showBack && <Button icon='pi pi-chevron-left' rounded link size='small' onClick={onHeaderBackClick} title='go back' className='absolute text-white' />}
         <label className='m-auto'>{screenTitle}</label>
     </ScreenTitle> : null;
 

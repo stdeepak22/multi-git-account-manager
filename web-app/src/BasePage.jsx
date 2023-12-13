@@ -10,16 +10,20 @@ import { LeftNavbar } from './leftNavbar';
 import { Toast } from 'primereact/toast';
 import { setToastCallback } from './non-component-sharing';
 import img from './../../assets/logo_128.png';
+import { sshKeysActions } from '../store/slices/sshKeySlice';
+import { useDispatch } from 'react-redux';
 
 export const App = () => {
     let toast = useRef();
-
+    let dispatch = useDispatch();
 
     useEffect(() => {
         setToastCallback(toast);
     }, [toast]);
 
-
+    useEffect(() => {
+        dispatch(sshKeysActions.loadSavedKeys());
+    }, []);
 
     return <PrimeReactProvider value={{}}>
         <Toast ref={toast} />

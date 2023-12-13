@@ -106,7 +106,10 @@ body {
 }
 
 .p-menu .p-menuitem.p-menuitem-highlight .p-menuitem-link {
-  background: var(--surface-200);  
+  background: var(--primary-100);  
+  .pi {
+    color: var(--primary-color);
+  }
 }
 
 .p-scrollpanel-bar {
@@ -130,4 +133,44 @@ body {
 
 .word-wrap-break{
   word-wrap: break-word;
+}
+
+
+
+
+
+/* custom tooltip used in section_testComplete  */
+[data-custom-tooltip]{
+  cursor: help;
+  display: inline-block;
+  transition: all 0.15s ease;
+  transform: scale(1);
+}
+
+[data-custom-tooltip]:hover {  
+  transform: scale(1.1);
+  background-color: var(--primary-100);
+  border-radius: 4px;
+}
+
+[data-custom-tooltip]::before{
+  content: attr(data-custom-tooltip);
+  width: 250px;
+  font-weight: 400;
+  font-size: 13px;
+  position: absolute;
+  opacity: 0;
+  transition: all 0.15s ease;
+  padding: 5px 10px;
+  color: white;
+  background-color: var(--primary-color);
+  border-radius: 4px;
+  box-shadow: 2px 2px 5px 0px var(--primary-200);  
+  pointer-events: none;
+  transform:  translateX(50px) translateY(-50px);
+}
+
+[data-custom-tooltip]:hover::before{    
+  opacity: 1;
+  transform:  translateX(0px) translateY(-100%);
 }

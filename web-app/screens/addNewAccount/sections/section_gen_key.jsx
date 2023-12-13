@@ -6,9 +6,8 @@ import { Message } from "primereact/message"
 import { Button } from "primereact/button"
 import { useDispatch, useSelector } from "react-redux"
 import { addGitAccountActions } from "../../../store/slices/addGitAccountSlice"
-import { ScreensMapping } from "../../screenConfig"
 import { showToast } from "../../../src/non-component-sharing"
-import { globalStuffActions } from "../../../store/slices/globalStuffSlice"
+import { sshKeysActions } from "../../../store/slices/sshKeySlice"
 
 
 export const Section_GenKey = () => {
@@ -43,6 +42,7 @@ export const Section_GenKey = () => {
     const addKeys = () => {
         electron.generateSshKeys(gitData.name).then(() => {
             dispatch(addGitAccountActions.markKeyAdded())
+            dispatch(sshKeysActions.loadSavedKeys())
             showToast({ severity: 'success', summary: 'Key Generated', detail: `Key as been generated, move next to Configure Git account.`, life: 5000 })
         }).catch(ex => {
             let { message } = ex;

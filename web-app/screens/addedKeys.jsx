@@ -12,9 +12,6 @@ import { isoStringToReadable, openExternalLink } from '../src/non-component-shar
 export const AddedKeysList = () => {
     let { userList } = useSelector(st => st.sshKeys);
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(sshKeysActions.loadSavedKeys());
-    }, []);
 
     const detailsButton = (user) => {
         let { gitUserName, AddedAt: addedAt } = user;
