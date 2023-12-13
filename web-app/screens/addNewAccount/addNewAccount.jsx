@@ -16,7 +16,7 @@ export const AddNewAccount = () => {
     const gitData = useSelector(st => st.addGitAccount)
 
     const [stepData, setStepData] = useState({
-        currentStep: 0
+        currentStep: 3
     });
 
     const allowedNext = () => {
@@ -81,7 +81,7 @@ export const AddNewAccount = () => {
         footer={getFooter()}
     >
         <div className='flex flex-column h-full'>
-            <Steps model={items} activeIndex={stepData.currentStep} className='mb-2' />
+            <Steps model={items} activeIndex={stepData.currentStep} className='mb-4' />
             {getChildSection()}
         </div>
     </SidePanelPage>

@@ -39,9 +39,9 @@ export const Section_ConfigGit = () => {
         })
     }, []);
 
-    return <div className='flex justify-content-center align-items-center flex-grow-1 fadein animation-fill-forwards animation-duration-500'
+    return <div className='flex justify-content-center flex-grow-1 fadein animation-fill-forwards animation-duration-500'
         style={{ opacity: 0 }}>
-        <div className='flex-grow-1'>
+        <div className='w-9'>
             {dialogShow.video && <ShowSshConfigureVideoDialog onClose={toggleVideoDialog} />}
             {dialogShow.publicKey && <ShowPublicKeyDialog pubKey={pubKey} onClose={togglePublicKeyDialog} onCopy={copyToClip} />}
             <Panel

@@ -55,7 +55,7 @@ export const Section_GenKey = () => {
     let disableValidate = !gitData.name || gitData.keyAdded;
     let disableAdd = !gitData.isValid || gitData.keyAdded;
 
-    return <div className='flex justify-content-center align-items-start flex-grow-1 fadein animation-fill-forwards animation-duration-500'
+    return <div className='flex justify-content-center flex-grow-1 fadein animation-fill-forwards animation-duration-500'
         style={{ opacity: 0 }}
     >
         <div className='w-9'>
