@@ -7,11 +7,13 @@ export const Dashboard = () => {
     let { userList } = useSelector(st => st.sshKeys);
     return <>
         <SidePanelPage screenTitle="Dashboard">
-            <Panel header="Panel Heading">
-                <p>
-                    We have {userList.length} keys configured.
-                </p>
-            </Panel>
+            <div className="side-panel-center">
+                <Panel header="Panel Heading">
+                    <p>
+                        We have {userList.length} keys configured.
+                    </p>
+                </Panel>
+            </div>
         </SidePanelPage>
     </>
 }

@@ -91,7 +91,7 @@ export const AddNewAccount = () => {
         footerAlign='end'
         footer={getFooter()}
     >
-        <div className='flex flex-column h-full'>
+        <div className="side-panel-center">
             <Steps model={items} activeIndex={stepData.currentStep} className='mb-4' />
             {getChildSection()}
         </div>

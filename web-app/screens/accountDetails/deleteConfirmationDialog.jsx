@@ -4,12 +4,13 @@ import { useDispatch } from "react-redux";
 import { globalStuffActions } from "../../store/slices/globalStuffSlice";
 import { ScreensMapping } from "../screenConfig";
 import { sshKeysActions } from "../../store/slices/sshKeySlice";
+import { removeSshKeys } from "../../src/non-component-sharing";
 
 
 export const DeleteConfirmationDialog = forwardRef(({ gitUserName }, ref) => {
     const dispatch = useDispatch();
     const deleteAcc = () => {
-        electron.remove_sshkey(gitUserName).then(() => {
+        removeSshKeys(gitUserName).then(() => {
             dispatch(sshKeysActions.loadSavedKeys())
             dispatch(globalStuffActions.setScreen({
                 screen: ScreensMapping.addedKeys,

@@ -136,7 +136,11 @@ body {
 }
 
 
-
+.side-panel-center {
+  min-width: 840px;
+  width: 75%;
+  margin:auto;
+}
 
 
 /* custom tooltip used in section_testComplete  */

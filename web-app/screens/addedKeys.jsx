@@ -8,6 +8,7 @@ import { globalStuffActions } from '../store/slices/globalStuffSlice';
 import { ScreensMapping } from './screenConfig';
 import { Button } from 'primereact/button';
 import { isoStringToReadable, openExternalLink } from '../src/non-component-sharing';
+import { Panel } from 'primereact/panel';
 
 export const AddedKeysList = () => {
     let { userList } = useSelector(st => st.sshKeys);
@@ -33,13 +34,16 @@ export const AddedKeysList = () => {
 
     return <>
         <SidePanelPage screenTitle="Following Keys are added">
-            <DataTable value={userList} tableStyle={{ minWidth: '50rem' }}>
-                <Column header="Git Name" field="gitUserName" ></Column>
-                <Column header="Github Profile" body={githubLink} ></Column>
-                <Column header="Added At" body={getReadbleDate}></Column>
-                <Column header='' body={detailsButton}></Column>
-            </DataTable>
-
+            <div className="side-panel-center">
+                <Panel header='Added Git Account'>
+                    <DataTable value={userList} tableStyle={{ minWidth: '50rem' }}>
+                        <Column header="Git Name" field="gitUserName" ></Column>
+                        <Column header="Github Profile" body={githubLink} ></Column>
+                        <Column header="Added At" body={getReadbleDate}></Column>
+                        <Column header='' body={detailsButton}></Column>
+                    </DataTable>
+                </Panel>
+            </div>
         </SidePanelPage>
     </>
 }

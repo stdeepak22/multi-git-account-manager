@@ -15,6 +15,8 @@ let obj = {
     checkGitUserExist: (git_username: string) => ipcRenderer.invoke("check-git-user-exist", git_username),
     openLinkInBrowser: (url: string) => ipcRenderer.invoke('openLinkInBrowser', url),
     verityGitAccessOverSSH: (git_username: string) => ipcRenderer.invoke('verityGitAccessOverSSH', git_username),
+    openDirectorySelector: () => ipcRenderer.invoke('directory-selection'),
+    cloneGitRepo: (gitUserName: string, repoName: string, dir: string) => ipcRenderer.invoke('clone-git-repository', gitUserName, repoName, dir)
 }
 
 contextBridge.exposeInMainWorld("electron", obj);

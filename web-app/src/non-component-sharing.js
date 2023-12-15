@@ -1,4 +1,5 @@
 
+//#region toast getter/setter methods
 export const { setToastCallback, showToast } = (() => {
     let toastRef;
     const setToastCallback = ref => {
@@ -14,34 +15,74 @@ export const { setToastCallback, showToast } = (() => {
         showToast
     }
 })();
+//#endregion
 
 
-export const { isoStringToReadable } = (() => {
-    let isoStringToReadable = isoString => {
-        const dt = new Date(isoString);
-        return `${dt.toLocaleTimeString()}, ${dt.toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' })}`;
+//#region Util methods
+export let isoStringToReadable = isoString => {
+    const dt = new Date(isoString);
+    return `${dt.toLocaleTimeString()}, ${dt.toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' })}`;
+}
+//#endregion
+
+
+//#region Git methods
+export const isGitUserExist = async gitUserName => {
+    return await window.electron.checkGitUserExist(gitUserName);
+}
+
+export const generateSshKeys = async gitUserName => {
+    return await window.electron.generateSshKeys(gitUserName);
+}
+
+export const getPublicKey = async gitUserName => {
+    return await window.electron.readPublicKey(gitUserName);
+}
+
+export const removeSshKeys = async gitUserName => {
+    return await window.electron.remove_sshkey(gitUserName);
+}
+
+export const verifySSHAccess = async gitUserName => {
+    try {
+        let { stdout, stderr } = await window.electron.verityGitAccessOverSSH(gitUserName);
+        return (stderr + stdout).includes(`You've successfully authenticated`);
+    } catch {
+        return false;
     }
-    return {
-        isoStringToReadable
-    }
-})()
+}
 
-export const { openExternalLink, verifySSHAccess, getPublicKey } = (() => {
-    const openExternalLink = url => {
-        window.electron.openLinkInBrowser(url);
-    }
+export const cloneGitRepo = async (gitUserName, repoName, dir) => {
+    let res = await window.electron.cloneGitRepo(gitUserName, repoName, dir);
+    console.log(res);
+    return res;
+}
+//#endregion
 
-    const verifySSHAccess = async gitUserName => {
-        try {
-            let { stdout, stderr } = await window.electron.verityGitAccessOverSSH(gitUserName);
-            return (stderr + stdout).includes(`You've successfully authenticated`);
-        } catch (_) {
-            return false;
-        }
-    }
 
-    const getPublicKey = gitUserName => window.electron.readPublicKey(gitUserName);
+//#region Min-Max-Restore toolbar methods
+export const toggleMinimize = () => {
+    window.electron.toggleMin();
+}
 
-    return { openExternalLink, verifySSHAccess, getPublicKey }
-})();
+export const toggleMaxSize = () => {
+    window.electron.toggleMax();
+}
+
+export const closeTheApp = () => {
+    window.electron.quitApp();
+}
+//#endregion
+
+
+//#region SSH/FS methods
+export const openExternalLink = url => {
+    window.electron.openLinkInBrowser(url);
+}
+
+export const openDirectorySelector = async () => {
+    return await window.electron.openDirectorySelector();
+}
+
+//#endregion
 

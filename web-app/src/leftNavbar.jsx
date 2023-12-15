@@ -108,8 +108,8 @@ export const LeftNavbar = () => {
             }}
         />
         <div className='flex align-items-center'>
-            <label className='pl-3 font-semibold mr-2'>
-                Repositories
+            <label className='pl-3 font-semibold mr-4'>
+                Repos
             </label>
             <div className='flex-1 p-input-icon-right'>
                 <i className={`pi ${repoList.searchText ? 'pi-times cursor-pointer' : 'pi-search'}`} onClick={clearSearchText} title={repoList.searchText ? 'Clear' : 'Search'} />

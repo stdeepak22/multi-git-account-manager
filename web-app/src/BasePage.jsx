@@ -8,7 +8,7 @@ import { ScrollPanel } from 'primereact/scrollpanel';
 import { MainContainer } from './mainContainer';
 import { LeftNavbar } from './leftNavbar';
 import { Toast } from 'primereact/toast';
-import { setToastCallback } from './non-component-sharing';
+import { closeTheApp, setToastCallback, toggleMaxSize, toggleMinimize } from './non-component-sharing';
 import img from './../../assets/logo_128.png';
 import { sshKeysActions } from '../store/slices/sshKeySlice';
 import { useDispatch } from 'react-redux';
@@ -31,13 +31,13 @@ export const App = () => {
             <div className='start'>
                 <img className='logo-img' src={img} />
             </div>
-            <div className='center' onDoubleClick={() => window.electron.toggleMax()}>
+            <div className='center' onDoubleClick={toggleMaxSize}>
                 Multi Git Account Manager
             </div>
             <div className='end' >
-                <Button label="__" text size="small" tabIndex={-1} onClick={() => window.electron.toggleMin()} />
-                <Button icon="pi pi-clone -rotate-90" text size="small" tabIndex={-1} onClick={() => window.electron.toggleMax()} />
-                <Button icon='pi pi-times' text size="small" tabIndex={-1} onClick={() => window.electron.quitApp()} />
+                <Button label="__" text size="small" tabIndex={-1} onClick={toggleMinimize} />
+                <Button icon="pi pi-clone -rotate-90" text size="small" tabIndex={-1} onClick={toggleMaxSize} />
+                <Button icon='pi pi-times' text size="small" tabIndex={-1} onClick={closeTheApp} />
             </div>
         </div>
         <div className='layout-rest-app'>

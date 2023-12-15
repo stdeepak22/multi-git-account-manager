@@ -77,12 +77,12 @@ export const GitProfilePanel = ({ gitUserName }) => {
         {dialogShow.video && <ShowSshConfigureVideoDialog onClose={toggleVideoDialog} />}
         {dialogShow.publicKey && <ShowPublicKeyDialog pubKey={gitCon.pubKey} onClose={togglePublicKeyDialog} onCopy={copyToClip} />}
         <Panel header="Git Profile" className='mb-4' toggleable collapseIcon='pi pi-chevron-up' expandIcon='pi pi-chevron-down'>
-            <div className='flex gap-3'>
-                <div className='flex flex-column gap-2 flex-1'>
+            <div className='flex gap-3 justify-content-between'>
+                <div className='flex flex-column gap-2 flex-1 max-w-12rem'>
                     <label>Profile Link</label>
                     <Button icon='pi pi-arrow-up-right' outlined severity='secondary' iconPos='right' label='Open' onClick={() => openExternalLink(`https://github.com/${gitUserName}`)}></Button>
                 </div>
-                <div className='flex flex-column gap-2 flex-1'>
+                <div className='flex flex-column gap-2 flex-1 max-w-12rem'>
                     <div className='flex align-items-center'>
                         <label>Has Git Access?</label>
                         <i className='pi pi-info-circle ml-2 cursor-pointer text-green-400'
@@ -99,10 +99,10 @@ export const GitProfilePanel = ({ gitUserName }) => {
                         iconPos='right'
                     />
                 </div>
-                <div className='flex flex-column justify-content-end flex-1'>
+                <div className='flex flex-column justify-content-end flex-1 max-w-12rem'>
                     <Button outlined severity='secondary' label='Copy Public Key' icon="pi pi-copy" onClick={copyToClip} />
                 </div>
-                <div className='flex flex-column justify-content-end flex-1'>
+                <div className='flex flex-column justify-content-end flex-1 max-w-12rem'>
                     <Button outlined severity='secondary' label='Show Public Key' icon="pi pi-book" onClick={togglePublicKeyDialog} />
                 </div>
             </div>

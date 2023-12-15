@@ -13,3 +13,13 @@ ipcMain.handle("verityGitAccessOverSSH", (_, gitUserName) => {
         })
     })
 })
+
+ipcMain.handle("clone-git-repository", (_, gitUserName, repoName, dir) => {
+    gitUserName = gitUserName.trim().toLocaleLowerCase();
+    const cmd = `git clone "git@${gitUserName}.github.com:${gitUserName}/${repoName}" "${dir}"`
+    return new Promise((res, rej) => {
+        exec(cmd, (err, stdout, stderr) => {
+            res({ err, stdout, stderr });
+        })
+    })
+})
