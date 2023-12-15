@@ -19,6 +19,10 @@ export const AccountDetails = ({ gitUserName, addedAt }) => {
         dispatch(globalStuffActions.setScreen({ screen: ScreensMapping.addedKeys, extra: {} }))
     }, [dispatch])
 
+    const openGitCloneScreen = useCallback(() => {
+        dispatch(globalStuffActions.setScreen({ screen: ScreensMapping.gitClone, extra: { gitUserName, addedAt } }));
+    }, [dispatch, gitUserName]);
+
 
     return <SidePanelPage screenTitle="User Details" showBack onHeaderBackClick={goBackToList}>
         <DeleteConfirmationDialog gitUserName={gitUserName} ref={confirmRef} />
@@ -34,7 +38,10 @@ export const AccountDetails = ({ gitUserName, addedAt }) => {
                 </div>
             </div>
             <GitProfilePanel gitUserName={gitUserName} />
-            <div className='flex align-items-center justify-content-end'>
+            <div className='flex align-items-center justify-content-between'>
+                <div>
+                    <Button icon='pi pi-clone' severity="info" label='Git Clone' title='Git Repository Clone' onClick={openGitCloneScreen} />
+                </div>
                 <Button icon='pi pi-trash' severity="danger" label='Delete' title='Delete' onClick={() => confirmRef.current.showConfirmDialog()} />
             </div>
         </Panel>

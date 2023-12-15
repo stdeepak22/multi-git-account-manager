@@ -18,7 +18,7 @@ export const AddNewAccount = () => {
     const gitData = useSelector(st => st.addGitAccount)
 
     const [stepData, setStepData] = useState({
-        currentStep: 3
+        currentStep: 0
     });
 
     const allowedNext = () => {

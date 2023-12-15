@@ -51,19 +51,24 @@ export const Section_TestAndComplete = () => {
                     So if you have configured the git as suggested in previous steps, now locally created keys will have access to your git repositories.
                     We will validate that now, and then you are done with SSH Key setup.<br /><br />
                     Next, whenever you want to clone any git from your account first time, you need to do it using
-                    this <i className="text-primary">{appConstants.appName}</i> (<span className="font-semibold" data-custom-tooltip="It will configure the right 'git remote origin' for your local cloned repository using the correct SSH Key, you do not have to do anything for this.">🤔Why?</span>),
+                    this <i className="text-primary">{appConstants.appName}</i> (<span className="p-component font-semibold"
+                        data-custom-tooltip="It will configure the right 'git remote origin' for your local cloned repository using the correct SSH Key, you do not have to do anything for this."
+                        tooltipOptions={{ position: 'top' }}
+                    >
+                        🤔Why?</span>),
                     thats it. Later you can use any tool of your choice for regular git operation.<br /><br />
                     <i className="text-primary"><span className="font-semibold">Remember:</span> Your private key is still in your local system, and doesn't need to be give to anyone.</i>
                 </div>
             </Panel>
 
             <Panel header="Verify Access" className="mt-4">
-                <div className="flex align-items-center">
-                    <div className="flex-1">
-                        Check access
+                <div className="flex align-items-center justify-content-evenly">
+                    <div className="flex">
+                        Lets verify if SSH Keys in local, and public key at github configured correctly.
                     </div>
 
                     <Button
+                        className="w-10rem"
                         severity={gitCon.canConnect === undefined ? `secondary` : gitCon.canConnect ? 'success' : 'danger'}
                         onClick={verifyAccess}
                         outlined

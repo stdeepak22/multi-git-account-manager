@@ -42,9 +42,7 @@ export const App = () => {
         </div>
         <div className='layout-rest-app'>
             <div className='layout-sidebar'>
-                <ScrollPanel style={{ width: '100%', height: `100%` }} className='p-fluid'>
-                    <LeftNavbar />
-                </ScrollPanel>
+                <LeftNavbar />
             </div>
             <div className='layout-main-container'>
                 <MainContainer />
