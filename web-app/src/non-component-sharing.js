@@ -23,6 +23,10 @@ export let isoStringToReadable = isoString => {
     const dt = new Date(isoString);
     return `${dt.toLocaleTimeString()}, ${dt.toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' })}`;
 }
+
+export const copyToClip = async text => {
+    await navigator.clipboard.writeText(text)
+}
 //#endregion
 
 
@@ -54,8 +58,13 @@ export const verifySSHAccess = async gitUserName => {
 
 export const cloneGitRepo = async (gitUserName, repoName, dir) => {
     let res = await window.electron.cloneGitRepo(gitUserName, repoName, dir);
-    console.log(res);
-    return res;
+    let errMsg = res.err?.message;
+    if (errMsg && errMsg.includes("Permission denied")) {
+        return "DENIED";
+    } else if (errMsg && errMsg.includes("Repository not found.")) {
+        return "NOT_FOUND";
+    }
+    return "SUCCESSFUL";
 }
 //#endregion
 
@@ -78,6 +87,10 @@ export const closeTheApp = () => {
 //#region SSH/FS methods
 export const openExternalLink = url => {
     window.electron.openLinkInBrowser(url);
+}
+
+export const openDirPath = dirPath => {
+    window.electron.openDirPath(dirPath);
 }
 
 export const openDirectorySelector = async () => {

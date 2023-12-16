@@ -5,7 +5,7 @@ import { Dashboard } from '../screens/dashboard'
 import { AccountDetails } from '../screens/accountDetails/accountDetails'
 import { AddNewAccount } from '../screens/addNewAccount/addNewAccount'
 import { AddedKeysList } from '../screens/addedKeys';
-import { GitClone } from '../screens/gitClone';
+import { GitClone } from '../screens/gitClone/gitClone';
 
 function getScreen(name, data) {
     const allProps = { ...data };

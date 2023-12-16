@@ -5,6 +5,10 @@ ipcMain.handle("openLinkInBrowser", (_, link) => {
     shell.openExternal(link);
 })
 
+ipcMain.handle("openDirPath", (_, path) => {
+    shell.showItemInFolder(path);
+})
+
 ipcMain.handle("verityGitAccessOverSSH", (_, gitUserName) => {
     gitUserName = gitUserName.trim().toLocaleLowerCase();
     return new Promise((res, rej) => {

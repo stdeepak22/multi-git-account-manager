@@ -2,7 +2,7 @@ import { Button } from "primereact/button"
 import { Panel } from "primereact/panel"
 import React, { useEffect, useState } from "react"
 import { ShowPublicKeyDialog, ShowSshConfigureVideoDialog } from "../../components/commonDialogComp";
-import { getPublicKey, openExternalLink, showToast, verifySSHAccess } from "../../src/non-component-sharing";
+import { copyToClip, getPublicKey, openExternalLink, showToast, verifySSHAccess } from "../../src/non-component-sharing";
 
 
 export const GitProfilePanel = ({ gitUserName }) => {
@@ -17,8 +17,8 @@ export const GitProfilePanel = ({ gitUserName }) => {
         video: false,
         publicKey: false,
     });
-    const copyToClip = () => {
-        navigator.clipboard.writeText(gitCon.pubKey).then(() => {
+    const copyPubKeyToClip = () => {
+        copyToClip(gitCon.pubKey).then(() => {
             showToast({ severity: 'info', summary: 'Copy', detail: `Public key copied to clip!`, life: 3000 })
         });
     }
@@ -75,7 +75,7 @@ export const GitProfilePanel = ({ gitUserName }) => {
 
     return <>
         {dialogShow.video && <ShowSshConfigureVideoDialog onClose={toggleVideoDialog} />}
-        {dialogShow.publicKey && <ShowPublicKeyDialog pubKey={gitCon.pubKey} onClose={togglePublicKeyDialog} onCopy={copyToClip} />}
+        {dialogShow.publicKey && <ShowPublicKeyDialog pubKey={gitCon.pubKey} onClose={togglePublicKeyDialog} onCopy={copyPubKeyToClip} />}
         <Panel header="Git Profile" className='mb-4' toggleable collapseIcon='pi pi-chevron-up' expandIcon='pi pi-chevron-down'>
             <div className='flex gap-3 justify-content-between'>
                 <div className='flex flex-column gap-2 flex-1 max-w-12rem'>
@@ -100,7 +100,7 @@ export const GitProfilePanel = ({ gitUserName }) => {
                     />
                 </div>
                 <div className='flex flex-column justify-content-end flex-1 max-w-12rem'>
-                    <Button outlined severity='secondary' label='Copy Public Key' icon="pi pi-copy" onClick={copyToClip} />
+                    <Button outlined severity='secondary' label='Copy Public Key' icon="pi pi-copy" onClick={copyPubKeyToClip} />
                 </div>
                 <div className='flex flex-column justify-content-end flex-1 max-w-12rem'>
                     <Button outlined severity='secondary' label='Show Public Key' icon="pi pi-book" onClick={togglePublicKeyDialog} />

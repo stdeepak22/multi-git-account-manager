@@ -14,6 +14,7 @@ let obj = {
     toggleMin: () => ipcRenderer.invoke("toggle-min"),
     checkGitUserExist: (git_username: string) => ipcRenderer.invoke("check-git-user-exist", git_username),
     openLinkInBrowser: (url: string) => ipcRenderer.invoke('openLinkInBrowser', url),
+    openDirPath: (dirPath: string) => ipcRenderer.invoke('openDirPath', dirPath),
     verityGitAccessOverSSH: (git_username: string) => ipcRenderer.invoke('verityGitAccessOverSSH', git_username),
     openDirectorySelector: () => ipcRenderer.invoke('directory-selection'),
     cloneGitRepo: (gitUserName: string, repoName: string, dir: string) => ipcRenderer.invoke('clone-git-repository', gitUserName, repoName, dir)

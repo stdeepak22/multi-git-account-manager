@@ -24,7 +24,7 @@ export const RepoTable = () => {
         field3: '4- Field 3',
         field4: '4- Field 4',
     }]
-    return <DataTable value={items} tableStyle={{ minWidth: '50rem' }} className="text-primary">
+    return <DataTable value={items} className="text-primary">
         <Column header="Git Name" field="field1" ></Column>
         <Column header="Github Profile" field="field2" ></Column>
         <Column header="Added At" field="field3"></Column>

@@ -36,7 +36,7 @@ export const AddedKeysList = () => {
         <SidePanelPage screenTitle="Following Keys are added">
             <div className="side-panel-center">
                 <Panel header='Added Git Account'>
-                    <DataTable value={userList} tableStyle={{ minWidth: '50rem' }}>
+                    <DataTable value={userList}>
                         <Column header="Git Name" field="gitUserName" ></Column>
                         <Column header="Github Profile" body={githubLink} ></Column>
                         <Column header="Added At" body={getReadbleDate}></Column>

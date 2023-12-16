@@ -4,7 +4,7 @@ import { Panel } from "primereact/panel";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "primereact/avatar";
 import { Tag } from "primereact/tag";
-import { getPublicKey, openExternalLink, showToast } from "../../../src/non-component-sharing";
+import { copyToClip, getPublicKey, openExternalLink, showToast } from "../../../src/non-component-sharing";
 import { addGitAccountActions } from "../../../store/slices/addGitAccountSlice";
 import { ShowPublicKeyDialog, ShowSshConfigureVideoDialog } from "../../../components/commonDialogComp";
 
@@ -27,8 +27,8 @@ export const Section_ConfigGit = () => {
         setDialogShow(st => ({ ...st, publicKey: !st.publicKey }));
     }
 
-    const copyToClip = () => {
-        navigator.clipboard.writeText(pubKey).then(() => {
+    const copyPubKeyToClip = () => {
+        copyToClip(pubKey).then(() => {
             showToast({ severity: 'info', summary: 'Copy', detail: `Public key copied to clip!`, life: 3000 })
         });
     }
@@ -42,7 +42,7 @@ export const Section_ConfigGit = () => {
     return <div className='flex flex-column justify-content-center flex-grow-1 fadein animation-fill-forwards animation-duration-500'
         style={{ opacity: 0 }}>
         {dialogShow.video && <ShowSshConfigureVideoDialog onClose={toggleVideoDialog} />}
-        {dialogShow.publicKey && <ShowPublicKeyDialog pubKey={pubKey} onClose={togglePublicKeyDialog} onCopy={copyToClip} />}
+        {dialogShow.publicKey && <ShowPublicKeyDialog pubKey={pubKey} onClose={togglePublicKeyDialog} onCopy={copyPubKeyToClip} />}
         <Panel
             header="How to configure public key?"
         >
@@ -57,7 +57,7 @@ export const Section_ConfigGit = () => {
                     <li>navigate to <code className="text-primary">"SSH and GPG keys"</code></li>
                     <li>click on button <code className="text-primary">"New SSH Key" </code><Tag value="Open" icon="pi pi-external-link" className="cursor-pointer" onClick={() => openExternalLink(`https://github.com/settings/ssh/new`)} /></li>
                     <li>paste the public key in <code className="text-primary">"Key"</code> area
-                        <Tag value="Copy Key" icon="pi pi-copy" className="cursor-pointer mr-2" onClick={copyToClip} />
+                        <Tag value="Copy Key" icon="pi pi-copy" className="cursor-pointer mr-2" onClick={copyPubKeyToClip} />
                         <Tag value="Show Key" icon="pi pi-book" className="cursor-pointer" onClick={togglePublicKeyDialog} />
                     </li>
                     <li>provide a descriptive name to <code className="text-primary">"Title"</code> field, so you can remember it.</li>
