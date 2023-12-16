@@ -7,8 +7,6 @@ console.log('from preload.js file.');
 
 let db = {
     exists: (uri: string) => ipcRenderer.invoke("db:existsAsync", uri),
-    filter: (uri: string, callback: Function) => ipcRenderer.invoke("db:filterAsync", uri, callback),
-    find: (uri: string, callback: Function) => ipcRenderer.invoke("db:findAsync", uri, callback),
     getData: (uri: string, defaultValue: any) => ipcRenderer.invoke("db:getDataAsync", uri, defaultValue),
     setData: (uri: string, data: any, merge: boolean) => ipcRenderer.invoke("db:setDataAsync", uri, data, merge),
     count: (uri: string) => ipcRenderer.invoke("db:getCountAsync", uri),

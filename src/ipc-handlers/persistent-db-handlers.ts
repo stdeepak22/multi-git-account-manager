@@ -7,14 +7,6 @@ ipcMain.handle("db:existsAsync", (_, uri) => {
     return db.exists(uri);
 })
 
-ipcMain.handle("db:filterAsync", (_, uri, callback) => {
-    return db.filter(uri, callback);
-})
-
-ipcMain.handle("db:findAsync", (_, uri, callback) => {
-    return db.find(uri, callback);
-})
-
 ipcMain.handle("db:getDataAsync", (_, uri, defaultValue = null) => {
     return db.getObjectDefault(uri, defaultValue);
 })
