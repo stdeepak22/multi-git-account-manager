@@ -99,3 +99,33 @@ export const openDirectorySelector = async () => {
 
 //#endregion
 
+
+//#region DB Methods
+export const db_exists = async (uri) => {
+    return window.electron.db.exists(uri);
+}
+
+export const db_filter = async (uri, callback) => {
+    return window.electron.db.filter(uri, callback);
+}
+
+export const db_find = async (uri, callback) => {
+    return window.electron.db.find(uri, callback);
+}
+
+export const db_getData = async (uri, defaultValue = null) => {
+    return window.electron.db.getData(uri, defaultValue);
+}
+
+export const db_setData = async (uri, data, merge = false) => {
+    return window.electron.db.setData(uri, data, merge);
+}
+
+export const db_count = async (uri) => {
+    return window.electron.db.count(uri);
+}
+
+export const db_delete = async (uri) => {
+    return window.electron.db.delete(uri);
+}
+//#endregion

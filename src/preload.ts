@@ -1,8 +1,19 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-import { contextBridge, ipcRenderer, shell } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 console.log('from preload.js file.');
+
+
+let db = {
+    exists: (uri: string) => ipcRenderer.invoke("db:existsAsync", uri),
+    filter: (uri: string, callback: Function) => ipcRenderer.invoke("db:filterAsync", uri, callback),
+    find: (uri: string, callback: Function) => ipcRenderer.invoke("db:findAsync", uri, callback),
+    getData: (uri: string, defaultValue: any) => ipcRenderer.invoke("db:getDataAsync", uri, defaultValue),
+    setData: (uri: string, data: any, merge: boolean) => ipcRenderer.invoke("db:setDataAsync", uri, data, merge),
+    count: (uri: string) => ipcRenderer.invoke("db:getCountAsync", uri),
+    delete: (uri: string) => ipcRenderer.invoke("db:deleteAsync", uri),
+}
 
 let obj = {
     readConfigFile: () => ipcRenderer.invoke("get-ssh-config-file", "config - copy"),
@@ -17,7 +28,8 @@ let obj = {
     openDirPath: (dirPath: string) => ipcRenderer.invoke('openDirPath', dirPath),
     verityGitAccessOverSSH: (git_username: string) => ipcRenderer.invoke('verityGitAccessOverSSH', git_username),
     openDirectorySelector: () => ipcRenderer.invoke('directory-selection'),
-    cloneGitRepo: (gitUserName: string, repoName: string, dir: string) => ipcRenderer.invoke('clone-git-repository', gitUserName, repoName, dir)
+    cloneGitRepo: (gitUserName: string, repoName: string, dir: string) => ipcRenderer.invoke('clone-git-repository', gitUserName, repoName, dir),
+    db
 }
 
 contextBridge.exposeInMainWorld("electron", obj);

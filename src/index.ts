@@ -1,7 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import './ipc-handlers/ssh-work/index';
-import './ipc-handlers/axios-fetch-handlers'
+import './ipc-handlers/axios-fetch-handlers';
 import './ipc-handlers/shellHandler';
+import './ipc-handlers/persistent-db-handlers';
 import { initializeAppMinMaxClose } from './ipc-handlers/custom-topbar-handler';
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
