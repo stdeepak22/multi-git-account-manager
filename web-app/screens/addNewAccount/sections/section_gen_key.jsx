@@ -6,8 +6,8 @@ import { Message } from "primereact/message"
 import { Button } from "primereact/button"
 import { useDispatch, useSelector } from "react-redux"
 import { addGitAccountActions } from "../../../store/slices/addGitAccountSlice"
-import { generateSshKeys, isGitUserExist, showToast } from "../../../src/non-component-sharing"
-import { sshKeysActions } from "../../../store/slices/sshKeySlice"
+import { isGitUserExist, showToast } from "../../../src/non-component-sharing"
+import { addProfile } from "../../../src/db_operations"
 
 
 export const Section_GenKey = () => {
@@ -40,9 +40,8 @@ export const Section_GenKey = () => {
             : 'this is not a valid github user. Check name again!'
 
     const addKeys = () => {
-        generateSshKeys(gitData.name).then(() => {
+        addProfile(dispatch, gitData.name).then(() => {
             dispatch(addGitAccountActions.markKeyAdded())
-            dispatch(sshKeysActions.loadSavedKeys())
             showToast({ severity: 'success', summary: 'Key Generated', detail: `Key as been generated, move next to Configure Git account.`, life: 5000 })
         }).catch(ex => {
             let { message } = ex;

@@ -10,17 +10,15 @@ import { InputText } from 'primereact/inputtext';
 
 export const LeftNavbar = () => {
     let searchBoxRef = useRef();
-    let { globalStuff: { selectedScreen }, sshKeys: { userList }, gitRepoMapping } = useSelector(st => ({
-        globalStuff: st.globalStuff,
-        sshKeys: st.sshKeys,
-        gitRepoMapping: st.gitRepoMapping
-    }))
+    let { selectedScreen } = useSelector(st => st.globalStuff)
+    let { names } = useSelector(st => st.gitProfile)
+    let { repoList } = useSelector(st => st.gitRepoMapping)
     const dispatch = useDispatch();
-    let [repoList, setRepoList] = useState({
+    let [state, setState] = useState({
         searchText: '',
         list: []
     });
-    let needToInsertCloneRepo = userList.length > 0;
+    let needToInsertCloneRepo = names.length > 0;
 
     const items = [
         { separator: true },
@@ -70,11 +68,11 @@ export const LeftNavbar = () => {
 
     const setSearchText = e => {
         let { value } = e.target;
-        setRepoList(st => ({ ...st, searchText: value }));
+        setState(st => ({ ...st, searchText: value }));
     }
 
     const clearSearchText = () => {
-        setRepoList(st => ({ ...st, searchText: '' }));
+        setState(st => ({ ...st, searchText: '' }));
         searchBoxRef.current.focus();
     }
 
@@ -88,15 +86,15 @@ export const LeftNavbar = () => {
 
     }, []);
     useEffect(() => {
-        let list = gitRepoMapping;
-        if (repoList.searchText) {
-            list = list.filter(c => c.searchField.includes(repoList.searchText.trim().toLowerCase()))
+        let list = repoList;
+        if (state.searchText) {
+            list = list.filter(c => c.searchField.includes(state.searchText.trim().toLowerCase()))
         }
-        setRepoList(st => ({
+        setState(st => ({
             ...st,
             list: convertToMenuItem(list)
         }))
-    }, [gitRepoMapping, repoList.searchText]);
+    }, [repoList, state.searchText]);
 
     return <>
         <div className='flex justify-content-center'>
@@ -112,13 +110,13 @@ export const LeftNavbar = () => {
                 Repos
             </label>
             <div className='flex-1 p-input-icon-right'>
-                <i className={`pi ${repoList.searchText ? 'pi-times cursor-pointer' : 'pi-search'}`} onClick={clearSearchText} title={repoList.searchText ? 'Clear' : 'Search'} />
-                <InputText ref={searchBoxRef} size="small" className='w-full' value={repoList.searchText} onChange={setSearchText} />
+                <i className={`pi ${state.searchText ? 'pi-times cursor-pointer' : 'pi-search'}`} onClick={clearSearchText} title={state.searchText ? 'Clear' : 'Search'} />
+                <InputText ref={searchBoxRef} size="small" className='w-full' value={state.searchText} onChange={setSearchText} />
             </div>
         </div>
         <Divider />
         <ScrollPanel style={{ width: '100%', height: `calc(100% - 470px)` }} className='p-fluid'>
-            <Menu model={repoList.list}
+            <Menu model={state.list}
                 pt={{
                     root: { className: '', style: { width: 'auto', borderWidth: 0 } },
                 }} />

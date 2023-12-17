@@ -3,20 +3,17 @@ import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"
 import { useDispatch } from "react-redux";
 import { globalStuffActions } from "../../store/slices/globalStuffSlice";
 import { ScreensMapping } from "../screenConfig";
-import { sshKeysActions } from "../../store/slices/sshKeySlice";
-import { removeSshKeys } from "../../src/non-component-sharing";
+import { deleteProfile } from "../../src/db_operations";
 
 
 export const DeleteConfirmationDialog = forwardRef(({ gitUserName }, ref) => {
     const dispatch = useDispatch();
-    const deleteAcc = () => {
-        removeSshKeys(gitUserName).then(() => {
-            dispatch(sshKeysActions.loadSavedKeys())
-            dispatch(globalStuffActions.setScreen({
-                screen: ScreensMapping.addedKeys,
-                extra: {}
-            }))
-        });
+    const deleteProfileAndRefresh = async () => {
+        await deleteProfile(dispatch, gitUserName);
+        dispatch(globalStuffActions.setScreen({
+            screen: ScreensMapping.addedKeys,
+            extra: {}
+        }))
     };
 
     const showConfirmDialog = () => {
@@ -30,7 +27,7 @@ export const DeleteConfirmationDialog = forwardRef(({ gitUserName }, ref) => {
             className: `max-w-30rem`,
             icon: 'pi pi-info-circle',
             acceptClassName: 'p-button-danger',
-            accept: deleteAcc,
+            accept: deleteProfileAndRefresh,
         });
     }
 

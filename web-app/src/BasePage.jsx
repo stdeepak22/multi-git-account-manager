@@ -10,7 +10,7 @@ import { LeftNavbar } from './leftNavbar';
 import { Toast } from 'primereact/toast';
 import { closeTheApp, setToastCallback, toggleMaxSize, toggleMinimize } from './non-component-sharing';
 import img from './../../assets/logo_128.png';
-import { sshKeysActions } from '../store/slices/sshKeySlice';
+import { appBootstrap } from '../store/mainStore';
 import { useDispatch } from 'react-redux';
 
 export const App = () => {
@@ -22,7 +22,7 @@ export const App = () => {
     }, [toast]);
 
     useEffect(() => {
-        dispatch(sshKeysActions.loadSavedKeys());
+        dispatch(appBootstrap());
     }, []);
 
     return <PrimeReactProvider value={{}}>

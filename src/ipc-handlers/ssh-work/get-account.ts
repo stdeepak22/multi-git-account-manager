@@ -8,7 +8,6 @@ class ConfigDetail {
     User: string;
     IdentityFile: string;
     AddedBy: string;
-    AddedAt: string;
 }
 
 function getSshAccounts() {
@@ -43,9 +42,6 @@ function getSshAccounts() {
             }
             if (c.startsWith("# AddedBy ")) {
                 cur.AddedBy = c.replace("# AddedBy ", "").trim();
-            }
-            if (c.startsWith("# AddedAt ")) {
-                cur.AddedAt = c.replace("# AddedAt ", "").trim();
             }
         });
         checkAndAdd();

@@ -15,7 +15,7 @@ let db = {
 }
 
 let obj = {
-    readConfigFile: () => ipcRenderer.invoke("get-ssh-config-file", "config - copy"),
+    readConfigFile: () => ipcRenderer.invoke("get-ssh-config-file"),
     generateSshKeys: (git_username: string) => ipcRenderer.invoke("generate-ssh-key", git_username),
     remove_sshkey: (git_username: string) => ipcRenderer.invoke("remove-ssh-key", git_username),
     readPublicKey: (git_username: string) => ipcRenderer.invoke("read-pub-ssh-key", git_username),

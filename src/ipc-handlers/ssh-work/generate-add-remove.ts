@@ -38,7 +38,6 @@ function _addIdentityKeysToConfig(git_username: string, fileName: string, consta
     lines.push(`  User git`);
     lines.push(`  IdentityFile ~/${appWorkingDir}/${fileName}`);
     lines.push(`  # AddedBy ${addedByName}`);
-    lines.push(`  # AddedAt ${dt.toISOString()}`);
     lines.push(end);
     appendFileSync(sshConfigFilePath, lines.join("\n"));
 }

@@ -11,6 +11,7 @@ import { Button } from 'primereact/button';
 import { cloneGitRepo, openDirPath, openDirectorySelector, openExternalLink, showToast } from '../../src/non-component-sharing';
 import { CloneQueryField } from './cloneQueryField';
 import { Message } from 'primereact/message';
+import { gitRepoCloned } from '../../src/db_operations';
 
 const cloneResultMessages = {
     "SUCCESSFUL": "Repository has been cloned and configured 💕",
@@ -28,7 +29,7 @@ export const GitClone = ({ gitUserName, addedAt }) => {
     const prependTextRef = useRef();
     const repoNameInputRef = useRef();
     let dispatch = useDispatch();
-    let { userList } = useSelector(st => st.sshKeys);
+    let { names, profiles } = useSelector(st => st.gitProfile);
     let [canClone, setCanClone] = useState({
         cloning: false,
         canClone: false,
@@ -48,16 +49,13 @@ export const GitClone = ({ gitUserName, addedAt }) => {
 
     const makeSelection = () => {
         if (gitUserName) {
-            let u = userList.find(c => c.gitUserName === gitUserName);
-            if (u) {
-                setState(st => ({ ...st, selectedUser: u }))
-            }
+            setState(st => ({ ...st, selectedUser: gitUserName }))
         }
     }
 
     useEffect(() => {
         makeSelection();
-    }, [gitUserName, userList]);
+    }, [gitUserName, names]);
 
     useEffect(() => {
         state.repoName && setPadLef();
@@ -100,14 +98,23 @@ export const GitClone = ({ gitUserName, addedAt }) => {
 
     const cloneRepo = async () => {
         setCanClone(st => ({ ...st, cloning: true, cloneResult: undefined }));
-        cloneGitRepo(state.selectedUser.gitUserName, state.repoName, state.targetDir).then(res => {
-            setCanClone(st => ({ ...st, cloning: false, cloneResult: res }));
-            if (res === "SUCCESSFUL") {
-                setState(initState);
-                setTimeout(makeSelection);
-            }
-        });
+        cloneGitRepo(state.selectedUser, state.repoName, state.targetDir)
+            .then(res => {
+                setCanClone(st => ({ ...st, cloning: false, cloneResult: res }));
+                if (res === "SUCCESSFUL") {
+                    gitRepoCloned(dispatch, state.selectedUser, state.repoName, state.targetDir)
+                    setState(initState);
+                    setTimeout(makeSelection);
+                }
+            }).catch(ex => {
+                console.error('clone error', ex);
+            });
     }
+
+    const profileLink = useCallback(name => {
+        let u = profiles.find(c => c.gitUserName === name);
+        return u.profileLink;
+    }, [profiles]);
 
     return <>
         <SidePanelPage screenTitle="Git Clone Screen" showBack={gitUserName && addedAt} onHeaderBackClick={goBackToDetails}>
@@ -119,15 +126,14 @@ export const GitClone = ({ gitUserName, addedAt }) => {
                                 <label className='w-10rem'>Git User Profile</label>
                                 <Dropdown value={state.selectedUser}
                                     onChange={setSelection}
-                                    options={userList}
-                                    optionLabel="gitUserName"
+                                    options={names}
                                     placeholder="Select Profile"
                                     className='w-15rem mr-4'
                                 />
                                 {state.selectedUser && <Button icon='pi pi-arrow-up-right' link
                                     title='Open profile in browser'
                                     severity='secondary' iconPos='right' label='Open Profile'
-                                    onClick={() => openExternalLink(`https://github.com/${state.selectedUser?.gitUserName}`)}></Button>
+                                    onClick={() => openExternalLink(profileLink(state.selectedUser))}></Button>
                                 }
                             </div>
                             <div className='flex align-items-center flex-1'>
@@ -151,14 +157,14 @@ export const GitClone = ({ gitUserName, addedAt }) => {
                             <label className='w-10rem'>Repository name  </label>
                             <span className="p-input-icon-left flex-1">
                                 <i className="pi pi-github text-primary" />
-                                <InputPrependText color="var(--primary-color)" ref={prependTextRef}>https://github.com/{state.selectedUser?.gitUserName || '________'}/</InputPrependText>
+                                <InputPrependText color="var(--primary-color)" ref={prependTextRef}>https://github.com/{state.selectedUser || '________'}/</InputPrependText>
                                 <InputText disabled={!state.selectedUser} value={state.repoName} ref={repoNameInputRef} onChange={setGitRepoName} onFocus={setPadLef} className='w-full' />
                             </span>
                         </div>
                         <div className='flex align-items-center'>
                             <label className='w-10rem'>Query</label>
                             <CloneQueryField
-                                gitUserName={state.selectedUser?.gitUserName}
+                                gitUserName={state.selectedUser}
                                 repoName={state.repoName}
                                 targetDir={state.targetDir}
                             />

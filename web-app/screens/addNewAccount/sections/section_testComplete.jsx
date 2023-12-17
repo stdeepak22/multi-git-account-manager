@@ -4,17 +4,18 @@ import { useDispatch, useSelector } from "react-redux"
 import { showToast, verifySSHAccess } from "../../../src/non-component-sharing";
 import { Panel } from "primereact/panel";
 import { addGitAccountActions } from "../../../store/slices/addGitAccountSlice";
+import { gitConnectedTested } from "../../../src/db_operations";
 
 export const Section_TestAndComplete = () => {
     const dispatch = useDispatch();
-    let { name } = useSelector(st => st.addGitAccount);
+    let { name: gitUserName } = useSelector(st => st.addGitAccount);
     let [gitCon, setGitCon] = useState({
         canConnect: undefined,
         processing: false
     });
     const verifyAccess = () => {
         setGitCon(st => ({ ...st, processing: true }));
-        verifySSHAccess(name).then(canConnect => {
+        verifySSHAccess(gitUserName).then(canConnect => {
             setGitCon(st => ({ ...st, processing: false, canConnect }));
             showToast({
                 summary: 'Git Access',
@@ -22,6 +23,7 @@ export const Section_TestAndComplete = () => {
                 detail: `SSH Keys are ${canConnect ? '' : 'not '}configured correctly, and ${canConnect ? 'can' : 'can\'t'} access git.`,
                 life: 5000,
             })
+            gitConnectedTested(gitUserName, canConnect);
             dispatch(addGitAccountActions.markGitConnectionTested(canConnect));
         }).catch(() => {
             setGitCon(st => ({ ...st, processing: false, canConnect: false }));

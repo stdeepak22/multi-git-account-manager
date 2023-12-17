@@ -7,11 +7,12 @@ import { Tag } from "primereact/tag";
 import { copyToClip, getPublicKey, openExternalLink, showToast } from "../../../src/non-component-sharing";
 import { addGitAccountActions } from "../../../store/slices/addGitAccountSlice";
 import { ShowPublicKeyDialog, ShowSshConfigureVideoDialog } from "../../../components/commonDialogComp";
+import { profilePublickeyAddedToGit } from "../../../src/db_operations";
 
 
 export const Section_ConfigGit = () => {
     const dispatch = useDispatch();
-    const { name, confirmedPubKeyConfigured } = useSelector(st => st.addGitAccount);
+    const { name: gitUserName, confirmedPubKeyConfigured } = useSelector(st => st.addGitAccount);
 
     const [dialogShow, setDialogShow] = useState({
         video: false,
@@ -33,8 +34,13 @@ export const Section_ConfigGit = () => {
         });
     }
 
+    const confirmPublicKeyAdded = async () => {
+        await profilePublickeyAddedToGit(gitUserName, !confirmedPubKeyConfigured);
+        dispatch(addGitAccountActions.toggleConfPubKeyConfig())
+    }
+
     useEffect(() => {
-        getPublicKey(name).then(key => {
+        getPublicKey(gitUserName).then(key => {
             setPubKey(key);
         })
     }, []);
@@ -52,7 +58,7 @@ export const Section_ConfigGit = () => {
                 <i className="text-primary"><span className="font-semibold">Remember:</span> Your private key is still in your local system, and doesn't need to be give to anyone.</i><br /><br />
                 We can configure SSH by following steps -
                 <ol style={{ lineHeight: `30px` }}>
-                    <li>goto your github account <code className="text-primary">"https://github.com/{name}"</code></li>
+                    <li>goto your github account <code className="text-primary">"https://github.com/{gitUserName}"</code></li>
                     <li>navigate to <code className="text-primary">"Settings"</code></li>
                     <li>navigate to <code className="text-primary">"SSH and GPG keys"</code></li>
                     <li>click on button <code className="text-primary">"New SSH Key" </code><Tag value="Open" icon="pi pi-external-link" className="cursor-pointer" onClick={() => openExternalLink(`https://github.com/settings/ssh/new`)} /></li>
@@ -76,7 +82,7 @@ export const Section_ConfigGit = () => {
                     icon="pi pi-check"
                     iconPos="right"
                     size="sm"
-                    onClick={() => dispatch(addGitAccountActions.toggleConfPubKeyConfig())}
+                    onClick={confirmPublicKeyAdded}
                     outlined={!confirmedPubKeyConfigured}
                 ></Button>
             </div>

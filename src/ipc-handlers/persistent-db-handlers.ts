@@ -1,7 +1,7 @@
 import { ipcMain } from "electron";
 import { JsonDB, Config } from "node-json-db";
 
-var db = new JsonDB(new Config("mgam_git_repo_mapping.bin"));
+var db = new JsonDB(new Config("mgam_git_repo_mapping.bin", true, true, "/"));
 
 ipcMain.handle("db:reloadAsync", () => {
     return db.reload();

@@ -1,26 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getAllRepositories } from "../../src/db_operations";
 
-let re = [];
-for (let i = 0; i < 20; i++) {
-    let vl = i + 1;
-    re.push({
-        repoName: `Repo - ${vl}`,
-        owner: `Name - ${vl}`,
-    });
-}
-re.forEach(c => c.searchField = `${c.repoName}:::${c.owner}`.toLowerCase());
-
-let initialState = re;
-const { actions: gitRepoMappingActions, reducer: gitRepoMappingReducer } = createSlice({
-    name: 'gitRepoMapping_slice',
-    initialState: initialState,
+const sliceName = "gitRepoMapping_slice";
+const loadAllRepositories = createAsyncThunk(`${sliceName}/loadAllRepositories`, (_, { dispatch }) => {
+    getAllRepositories().then(st => dispatch(gitRepoMappingActions.setRepoMapping(st)));
+})
+const { actions: gitRepoMappingPartialActions, reducer: gitRepoMappingReducer } = createSlice({
+    name: sliceName,
+    initialState: {
+        repoList: []
+    },
     reducers: {
-        // addTodo2: (state, action) => {
-        //     state.push(action.payload);
-        // }
+        setRepoMapping: (state, action) => {
+            state.repoList = action.payload.map(c => ({ ...c, searchField: `${c.repoName}:::${c.owner}` }));
+        }
     }
 });
 
+const gitRepoMappingActions = { ...gitRepoMappingPartialActions, loadAllRepositories };
 export {
     gitRepoMappingReducer,
     gitRepoMappingActions

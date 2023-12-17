@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 import { SidePanelPage } from '../components/sidePanelPage';
 
 export const Dashboard = () => {
-    let { userList } = useSelector(st => st.sshKeys);
+    let { sshConfig } = useSelector(st => st.gitProfile);
     return <>
         <SidePanelPage screenTitle="Dashboard">
             <div className="side-panel-center">
                 <Panel header="Panel Heading">
-                    <p>
-                        We have {userList.length} keys configured.
-                    </p>
+                    <pre>
+                        {JSON.stringify(sshConfig, null, "  ")}
+                    </pre>
                 </Panel>
             </div>
         </SidePanelPage>

@@ -51,7 +51,7 @@ export const AccountDetails = ({ gitUserName, addedAt }) => {
                     </div>
                     <Button icon='pi pi-trash' severity="danger" label='Delete' title='Delete' onClick={() => confirmRef.current.showConfirmDialog()} />
                 </div>
-                <RepoTable />
+                <RepoTable gitUserName={gitUserName} />
             </Panel>
         </div>
     </SidePanelPage>

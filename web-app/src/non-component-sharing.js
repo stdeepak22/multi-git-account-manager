@@ -39,6 +39,11 @@ export const generateSshKeys = async gitUserName => {
     return await window.electron.generateSshKeys(gitUserName);
 }
 
+export const readSSHConfig = async () => {
+    const allProfiles = await window.electron.readConfigFile();
+    return allProfiles.map(c => ({ ...c, gitUserName: c.Host.split('.')[0] }))
+}
+
 export const getPublicKey = async gitUserName => {
     return await window.electron.readPublicKey(gitUserName);
 }
@@ -102,6 +107,12 @@ export const openDirectorySelector = async () => {
 
 //#region DB Methods
 
+export const db_path = {
+    allProfiles: "/git_profiles",
+    allRepos: "/git_repos",
+    userProfile: gitUserName => `/git_profiles/${gitUserName}`
+}
+
 export const db_reload = async () => {
     return window.electron.db.reload();
 }
@@ -111,7 +122,15 @@ export const db_exists = async (uri) => {
 }
 
 export const db_getData = async (uri, defaultValue = null) => {
-    return window.electron.db.getData(uri, defaultValue);
+    const data = await window.electron.db.getData(uri, defaultValue);
+    // because node-json-db auto convert the date in iso format to date object
+    // which is not accepted by Redux, so doing stringfy followed by parse will
+    // make sure to return date in string rather than "Date" object
+    if (data instanceof Object) {
+        return JSON.parse(JSON.stringify(data))
+    } else {
+        return data;
+    }
 }
 
 export const db_setData = async (uri, data, merge = false) => {
