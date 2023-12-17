@@ -101,6 +101,11 @@ export const openDirectorySelector = async () => {
 
 
 //#region DB Methods
+
+export const db_reload = async () => {
+    return window.electron.db.reload();
+}
+
 export const db_exists = async (uri) => {
     return window.electron.db.exists(uri);
 }

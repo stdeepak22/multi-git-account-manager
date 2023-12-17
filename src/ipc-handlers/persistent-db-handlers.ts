@@ -3,6 +3,10 @@ import { JsonDB, Config } from "node-json-db";
 
 var db = new JsonDB(new Config("mgam_git_repo_mapping.bin"));
 
+ipcMain.handle("db:reloadAsync", () => {
+    return db.reload();
+})
+
 ipcMain.handle("db:existsAsync", (_, uri) => {
     return db.exists(uri);
 })

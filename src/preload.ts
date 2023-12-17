@@ -6,6 +6,7 @@ console.log('from preload.js file.');
 
 
 let db = {
+    reload: () => ipcRenderer.invoke("db:reloadAsync"),
     exists: (uri: string) => ipcRenderer.invoke("db:existsAsync", uri),
     getData: (uri: string, defaultValue: any) => ipcRenderer.invoke("db:getDataAsync", uri, defaultValue),
     setData: (uri: string, data: any, merge: boolean) => ipcRenderer.invoke("db:setDataAsync", uri, data, merge),
