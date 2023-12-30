@@ -3,6 +3,9 @@ import { Panel } from "primereact/panel"
 import React, { useEffect, useState } from "react"
 import { ShowPublicKeyDialog, ShowSshConfigureVideoDialog } from "../../components/commonDialogComp";
 import { copyToClip, getPublicKey, openExternalLink, showToast, verifySSHAccess } from "../../src/non-component-sharing";
+import { addGitAccountActions } from "../../store/slices/addGitAccountSlice";
+import { useDispatch } from "react-redux";
+import { gitConnectedTested } from "../../src/db_operations";
 
 
 export const GitProfilePanel = ({ gitUserName }) => {
@@ -12,6 +15,8 @@ export const GitProfilePanel = ({ gitUserName }) => {
         processing: false,
         pubKey: ''
     });
+
+    const dispatch = useDispatch();
 
     const [dialogShow, setDialogShow] = useState({
         video: false,
@@ -59,6 +64,9 @@ export const GitProfilePanel = ({ gitUserName }) => {
                 detail: `SSH Keys are ${canConnect ? '' : 'not '}configured correctly, and ${canConnect ? 'can' : 'can\'t'} access git.`,
                 life: hideTime,
             })
+
+            gitConnectedTested(gitUserName, canConnect);
+            dispatch(addGitAccountActions.markGitConnectionTested(canConnect));
 
             !canConnect && setTimeout(() => {
                 setGitCon(st => ({ ...st, processing: false, canConnect: undefined }));
