@@ -12,6 +12,7 @@ export class Constants {
     homedir: string;
     addedByName: string;
     sshConfigFilePath: string;
+    sshKnownHostsFilePath: string;
     appWorkingDirPath: string;
 }
 
@@ -24,6 +25,7 @@ function getConstants(): Constants {
         homedir: _homedir,
         addedByName,
         sshConfigFilePath: join(_homedir, sshDirName, 'config'),
+        sshKnownHostsFilePath: join(_homedir, sshDirName, 'known_hosts'),
         appWorkingDirPath: join(_homedir, appWorkingDir)
     }
 }

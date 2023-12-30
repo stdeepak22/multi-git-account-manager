@@ -1,12 +1,41 @@
 import { getConstants, getConfigStartEndComments, getKeysFileName, Constants } from "./ssh-constants";
 import { execSync } from "child_process";
 import { existsSync, appendFileSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'fs';
-import { join } from "path";
+import { join, dirname } from "path";
+
+
+function makeSureGithubAddedAsKnownHost(appWorkingDirPath: string, sshKnownHostsFilePath: string){
+    let needToAdd = false;
+    let createFile = false;
+    if(existsSync(sshKnownHostsFilePath)){
+        const result = execSync(`ssh-keygen -H -F github.com`, { cwd: appWorkingDirPath, encoding: 'utf-8' });
+        console.log(`keygen -H - F result`, result);
+        needToAdd = !result;
+    }else{
+        const dir = dirname(sshKnownHostsFilePath);
+        if(!existsSync(dir)){
+            mkdirSync(dir);
+        }
+        createFile = true;
+        needToAdd = true;
+    }
+
+    if(needToAdd){
+        const githubDetails = execSync(`ssh-keyscan -H github.com`, { cwd: appWorkingDirPath, encoding: 'utf-8' });
+        if(createFile){
+            writeFileSync(sshKnownHostsFilePath, githubDetails); 
+        }else{
+            appendFileSync(sshKnownHostsFilePath, githubDetails);
+        }
+    }
+}
 
 function generateSshKeysAndAdd(git_username: string) {
     git_username = git_username.trim().toLocaleLowerCase();
     let constants = getConstants();
-    let { userName, hostname, appWorkingDirPath } = constants;
+    let { userName, hostname, appWorkingDirPath, sshKnownHostsFilePath } = constants;
+
+    makeSureGithubAddedAsKnownHost(appWorkingDirPath, sshKnownHostsFilePath)
 
     const [privKeyFileName] = getKeysFileName(git_username);
     const comment = `${userName}@${hostname}: added ssh for ${git_username} for ${"github.com"}`;
@@ -39,7 +68,12 @@ function _addIdentityKeysToConfig(git_username: string, fileName: string, consta
     lines.push(`  IdentityFile ~/${appWorkingDir}/${fileName}`);
     lines.push(`  # AddedBy ${addedByName}`);
     lines.push(end);
-    appendFileSync(sshConfigFilePath, lines.join("\n"));
+
+    if(existsSync(sshConfigFilePath)){
+        appendFileSync(sshConfigFilePath, lines.join("\n"));
+    }else{
+        writeFileSync(sshConfigFilePath, lines.join("\n"));        
+    }
 }
 
 
