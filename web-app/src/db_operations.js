@@ -3,11 +3,11 @@ import { gitRepoMappingActions } from "../store/slices/gitRepoMappingSlice";
 import { db_delete, db_getData, db_path, db_setData, generateSshKeys, removeSshKeys } from "./non-component-sharing"
 
 export const getAllProfiles = async () => {
-    return await db_getData(db_path.allProfiles);
+    return await db_getData(db_path.allProfiles, []);
 }
 
 export const getAllRepositories = async () => {
-    return await db_getData(db_path.allRepos);
+    return await db_getData(db_path.allRepos, []);
 }
 
 export const addProfile = async (dispatch, gitUserName) => {

@@ -48,7 +48,7 @@ function getSshAccounts() {
 
         return all.filter(c => c.AddedBy === addedByName);
     } else {
-        return null;
+        return [];
     }
 }
 

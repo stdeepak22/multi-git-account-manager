@@ -41,7 +41,7 @@ export const generateSshKeys = async gitUserName => {
 
 export const readSSHConfig = async () => {
     const allProfiles = await window.electron.readConfigFile();
-    return allProfiles.map(c => ({ ...c, gitUserName: c.Host.split('.')[0] }))
+    return allProfiles.map(c => ({ ...c, gitUserName: c.Host.split('.')[0] }));
 }
 
 export const getPublicKey = async gitUserName => {
