@@ -4,7 +4,7 @@ import { join } from 'path';
 const sshDirName = '.ssh';
 const appWorkingDir = '.multi-git-account-manager';
 const addedByName = 'by-multi-git-account-manager';
-
+const dbFileName = 'mgam_git_repo_mapping.bin';
 export class Constants {
     appWorkingDir: string;
     hostname: string;
@@ -14,6 +14,7 @@ export class Constants {
     sshConfigFilePath: string;
     sshKnownHostsFilePath: string;
     appWorkingDirPath: string;
+    dbFilePath: string;
 }
 
 function getConstants(): Constants {
@@ -26,7 +27,8 @@ function getConstants(): Constants {
         addedByName,
         sshConfigFilePath: join(_homedir, sshDirName, 'config'),
         sshKnownHostsFilePath: join(_homedir, sshDirName, 'known_hosts'),
-        appWorkingDirPath: join(_homedir, appWorkingDir)
+        appWorkingDirPath: join(_homedir, appWorkingDir),
+        dbFilePath: join(_homedir, appWorkingDir, dbFileName)
     }
 }
 

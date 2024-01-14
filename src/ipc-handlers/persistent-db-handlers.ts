@@ -1,7 +1,11 @@
 import { ipcMain } from "electron";
 import { JsonDB, Config } from "node-json-db";
+import { getConstants } from "./ssh-work/ssh-constants";
 
-var db = new JsonDB(new Config("mgam_git_repo_mapping.bin", true, true, "/"));
+
+let { dbFilePath } = getConstants();
+
+var db = new JsonDB(new Config(dbFilePath, true, true, "/"));
 
 ipcMain.handle("db:reloadAsync", () => {
     return db.reload();

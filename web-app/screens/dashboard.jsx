@@ -18,9 +18,7 @@ export const Dashboard = () => {
         let profilesFromConfig = Object.keys(sshConfig);
         let profilesLocalDB = profiles.map(c => c.gitUserName);
         let newProfiles = profilesFromConfig.filter(c => !profilesLocalDB.includes(c));
-        if (newProfiles.length > 0) {
-            setState(st => ({ ...st, showImport: true, newProfiles }))
-        }
+        setState(st => ({ ...st, showImport: newProfiles.length > 0, newProfiles }));
     }, [sshConfig]);
 
     const addProfileFromSSHConfig = () => {
