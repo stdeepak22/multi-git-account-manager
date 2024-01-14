@@ -4,4 +4,5 @@ export const ScreensMapping = {
     accountDetails: 'accountDetailsScreen',
     addNewAccount: 'addNewAccountScreen',
     gitClone: 'gitCloneScreen',
+    gitImportExisting: 'gitImportExistingScreen',
 }

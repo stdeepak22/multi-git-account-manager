@@ -37,6 +37,13 @@ export const LeftNavbar = () => {
             command: () => {
                 dispatch(globalStuffActions.setScreen({ screen: ScreensMapping.gitClone, extra: {} }));
             }
+        }, {
+            icon: 'pi pi-cloud-upload',
+            label: 'Import Existing',
+            className: ScreensMapping.gitImportExisting === selectedScreen ? 'p-menuitem-highlight' : '',
+            command: () => {
+                dispatch(globalStuffActions.setScreen({ screen: ScreensMapping.gitImportExisting, extra: {} }));
+            }
         }] : []),
         { separator: true },
         {

@@ -26,7 +26,7 @@ let obj = {
     openLinkInBrowser: (url: string) => ipcRenderer.invoke('openLinkInBrowser', url),
     openDirPath: (dirPath: string) => ipcRenderer.invoke('openDirPath', dirPath),
     verityGitAccessOverSSH: (git_username: string) => ipcRenderer.invoke('verityGitAccessOverSSH', git_username),
-    openDirectorySelector: () => ipcRenderer.invoke('directory-selection'),
+    openDirectorySelector: (directorySelectionOps: object) => ipcRenderer.invoke('directory-selection', directorySelectionOps),
     cloneGitRepo: (gitUserName: string, repoName: string, dir: string) => ipcRenderer.invoke('clone-git-repository', gitUserName, repoName, dir),
     db
 }

@@ -8,7 +8,7 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { InputPrependText } from '../../components/inputFieldPrependText';
 import { Button } from 'primereact/button';
-import { cloneGitRepo, openDirPath, openDirectorySelector, openExternalLink, showToast } from '../../src/non-component-sharing';
+import { cloneGitRepo, openDirPath, openNewDirectorySelector, openExternalLink, showToast } from '../../src/non-component-sharing';
 import { CloneQueryField } from './cloneQueryField';
 import { Message } from 'primereact/message';
 import { gitRepoCloned } from '../../src/db_operations';
@@ -72,7 +72,7 @@ export const GitClone = ({ gitUserName, addedAt }) => {
     }
 
     const targetFolderSelection = () => {
-        openDirectorySelector().then(res => {
+        openNewDirectorySelector().then(res => {
             if (!res) {
                 return;
             }
@@ -83,7 +83,7 @@ export const GitClone = ({ gitUserName, addedAt }) => {
                     : error === "PATH_NON_EMPTY"
                         ? "Selected directory is not an empty directory, please select empty directory."
                         : "Something went wrong. Make sure you are selecting empty dir.";
-                showToast({ severity: 'error', summary: 'Key Generated', detail: msg, life: 5000 })
+                showToast({ severity: 'error', summary: 'Git Clone Path', detail: msg, life: 5000 })
             }
             else {
                 setState(st => ({ ...st, targetDir: selectedPath }));

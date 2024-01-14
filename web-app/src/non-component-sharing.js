@@ -98,8 +98,12 @@ export const openDirPath = dirPath => {
     window.electron.openDirPath(dirPath);
 }
 
-export const openDirectorySelector = async () => {
-    return await window.electron.openDirectorySelector();
+export const openNewDirectorySelector = async () => {
+    return await window.electron.openDirectorySelector({ shouldBeEmpty: true, shouldBeExistingGit: false });
+}
+
+export const openGitDirectorySelector = async () => {
+    return await window.electron.openDirectorySelector({ shouldBeEmpty: false, shouldBeExistingGit: true });
 }
 
 //#endregion

@@ -6,6 +6,7 @@ import { AccountDetails } from '../screens/accountDetails/accountDetails'
 import { AddNewAccount } from '../screens/addNewAccount/addNewAccount'
 import { AddedKeysList } from '../screens/addedKeys';
 import { GitClone } from '../screens/gitClone/gitClone';
+import { GitImportExisting } from '../screens/gitImportExisting';
 
 function getScreen(name, data) {
     const allProps = { ...data };
@@ -18,6 +19,8 @@ function getScreen(name, data) {
             return <AccountDetails {...allProps} />
         case ScreensMapping.gitClone:
             return <GitClone {...allProps} />
+        case ScreensMapping.gitImportExisting:
+            return <GitImportExisting {...allProps} />
         default:
             return <Dashboard {...allProps} />;
     }

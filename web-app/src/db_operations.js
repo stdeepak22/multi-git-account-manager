@@ -23,6 +23,20 @@ export const addProfile = async (dispatch, gitUserName) => {
     dispatch(gitProfileActions.loadProfileAndSSHConfig())
 }
 
+export const setFullGitProfileConfig = async (dispatch, gitUserNames) => {
+    for (const gitUserName of gitUserNames) {
+        await db_setData(db_path.userProfile(gitUserName), {
+            gitUserName,
+            addedAt: new Date().toISOString(),
+            profileLink: `https://github.com/${gitUserName}`,
+            keyGenerated: true,
+            gitConfigured: true,
+            connectionTested: false
+        });
+    }
+    dispatch(gitProfileActions.loadProfileAndSSHConfig())
+}
+
 export const profilePublickeyAddedToGit = async (gitUserName, configured) => {
     await db_setData(db_path.userProfile(gitUserName), {
         gitConfigured: configured
